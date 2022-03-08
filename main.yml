@@ -161,6 +161,10 @@
         - firefox
         # - little-snitch
 
+        # work / life?
+        - zoom
+        - slack # needed for the huddles
+
         # macOS quality of life improvements
         - alfred
         - bartender
