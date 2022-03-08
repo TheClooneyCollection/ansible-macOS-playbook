@@ -53,7 +53,8 @@
 
     - name: Bootstrap Vim plugins if plugins are not installed yet
       command: vim
-      async: 300 # Give vim 5 minutes to run in the background
+      async: 300 # Give vim 5 minutes to run
+      poll: 0 # in the background
       when: not vim_plugins_stat.stat.exists
 
     - name: Check if YouCompleteMe has been compiled
@@ -92,7 +93,8 @@
 
     - name: Bootstrap Spacemacs if it hasn't been initialized yet
       command: emacs
-      async: 600 # Give emacs 10 minutes to run in the background
+      async: 600 # Give Emacs 10 minutes to run
+      poll: 0 # in the background
       when: not spacemacs_stat.stat.exists
 
     - name: Tap the fonts repository
