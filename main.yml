@@ -9,7 +9,7 @@
   tasks:
     - name: Password Test!
       command: echo "Password test in progress..."
-      timeout: 1
+      timeout: 0
       become: true
       changed_when: false
 
