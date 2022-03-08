@@ -191,6 +191,13 @@
         # mas 'GIPHY CAPTURE', id: 668208984
         # mas 'Disk Care', id: 913724705
 
+    - name: Install Homebrew Font Casks (that can be shared with other users)
+      homebrew_cask:
+        name: "{{ item }}"
+        state: present
+        install_options:
+          - 'fontdir=/Users/Shared/Fonts'
+      loop:
         # fonts
         - font-inconsolata-g-for-powerline
         - font-source-code-pro
