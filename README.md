@@ -1,8 +1,10 @@
 # ansible-macOS-playbook
 
-This playbook installs and configures most of the software I use on my Mac.
+I try my best to automate as much as I can to set up my Macs for development work.
 
 ## Installation
+
+(Mostly taken from [@geerlingguy](https://github.com/geerlingguy) 's [Mac Development Ansible Playbook](https://github.com/geerlingguy/mac-dev-playbook) as pointed out inthe Credits section)
 
 1. Ensure Apple's command line tools are installed (`xcode-select --install` to launch the installer).
 2. [Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html):
