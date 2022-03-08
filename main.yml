@@ -189,3 +189,10 @@
         - font-inconsolata-g-for-powerline
         - font-source-code-pro
         - font-source-code-pro-for-powerline
+
+
+    - name: Ensure Ansible is installed with Homebrew's pip
+      pip:
+        name: ansible
+      vars:
+        extra_path: /opt/homebrew/bin
