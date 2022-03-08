@@ -6,22 +6,6 @@
     homebrew_group: admin
     homebrew_upgrade_all_packages: true
 
-  # Actually, this doesn't work since we don't wait for Vim to finish... Sad...
-  handlers:
-    - name: vim-has-initialized
-      block:
-      - name: Compile YouCompleteMe
-        command:
-          cmd: python3 install.py
-          chdir: ~/.vim-plugins/plugins/YouCompleteMe
-
-      - name: Mark YCM as compiled
-        file:
-          path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
-          state: touch
-      when: not YCM_compiled.stat.exists
-
-
   tasks:
     - name: Password Test!
       command: echo "Password test in progress..."
@@ -106,12 +90,27 @@
       async: 90 # Give Vim one minute and half to run
       poll: 0 # in the background
       when: not vim_plugins_stat.stat.exists
-      notify: vim-has-initialized
+
+    # Caveat: Due to the nature of how Vim and its plugins are installed,
+    # YouCompleteMe won't be installed on the first run of the playbook...
 
     - name: Check if YouCompleteMe has been compiled
       stat:
         path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
       register: YCM_compiled
+
+    - name: Compile YouCompleteMe
+      block:
+      - name: Compile YouCompleteMe
+        command:
+          cmd: python3 install.py
+          chdir: ~/.vim-plugins/plugins/YouCompleteMe
+
+      - name: Mark YCM as compiled
+        file:
+          path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
+          state: touch
+      when: vim_plugins_stat.stat.exists and not YCM_compiled.stat.exists
 
     - name: Tap the fonts repository
       homebrew_tap:
