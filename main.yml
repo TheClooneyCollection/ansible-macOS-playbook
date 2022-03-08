@@ -16,6 +16,109 @@
         dest: ~/
         version: main
 
-  roles:
-    - geerlingguy.mac.homebrew
+    - name: Set up Homebrew (and upgrade all packages)
+      include_role:
+        name: geerlingguy.mac.homebrew
 
+    - name: Install Vim
+      homebrew:
+        name: vim
+
+    - name: Check if Vim plugins are installed
+      stat:
+        path: ~/.vim-plugins/
+      register: vim_plugins_stat
+
+    - name: Bootstrap Vim plugins if plugins are not installed yet
+      command: vim
+      async: 300 # Give vim 5 minutes to run in the background
+      when: not vim_plugins_stat.stat.exists
+
+    - name: Tap the Emacs Plus repository
+      homebrew_tap:
+        name: d12frosted/emacs-plus
+
+    # Not sure whether libvterm is needed here...
+    - name: Install Emacs Plus
+      homebrew:
+        name: "{{ item }}"
+      loop:
+        - emacs-plus
+        - libvterm # Is this needed though?
+
+    - name: Check if Spacemacs has been initialized
+      stat:
+        path: ~/.emacs.d/
+      register: spacemacs_stat
+
+    - name: Bootstrap Spacemacs if it hasn't been initialized yet
+      command: emacs
+      async: 600 # Give emacs 10 minutes to run in the background
+      when: not spacemacs_stat.stat.exists
+
+    - name: Tap the fonts repository
+      homebrew_tap:
+        name: homebrew/cask-fonts
+
+    - name: Install Homebrew packages
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      loop:
+        # commandline utilities
+        - fish
+        - tree
+
+        # git
+        - git
+        - git-lfs
+        - ydiff # needed by git for diffing
+
+        # editors support
+        - fzf # needed by fish and also vim for searching
+
+        - ripgrep # needed by emacs for searching
+        - ispell # needed by emacs for spell checks
+
+        # languages
+        - python
+        - rbenv
+
+        # Swift
+
+        - carthage # Until SPM solves its binary caches on CI, carthage is our friend...
+
+        - swiftlint
+        - swiftformat
+
+        # misc
+        - svn # need by the font casks
+
+    - name: Install Homebrew Casks
+      homebrew_cask:
+        name: "{{ item }}"
+        state: present
+      loop:
+        # macOS must-haves
+        - 1password
+        - dropbox
+        - firefox
+        # - little-snitch
+
+        # macOS quality of life improvements
+        - alfred
+        - bartender
+        - caffeine
+        - istat-menus
+        - iterm2
+        - moom
+
+        # MIA
+        # mas 'DaisyDisk', id: 411643860
+        # mas 'GIPHY CAPTURE', id: 668208984
+        # mas 'Disk Care', id: 913724705
+
+        # fonts
+        - font-inconsolata-g-for-powerline
+        - font-source-code-pro
+        - font-source-code-pro-for-powerline
