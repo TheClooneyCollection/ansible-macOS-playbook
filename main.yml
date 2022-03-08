@@ -41,7 +41,8 @@
         cd ~
         git init
         git remote add origin https://github.com/NicholasTD07/dotfiles.git
-        git pull origin main
+        git fetch origin
+        git checkout -b main origin/main
       when: not dotfile_repo.stat.exists
 
     - name: Update the dotfile repo
