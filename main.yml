@@ -22,7 +22,7 @@
       register: dotfile_repo
 
     - name: Clone the dotfile repo into the home directory `~`
-      shell:
+      shell: |
         cd ~
         git init
         git remote add origin https://github.com/NicholasTD07/dotfiles.git
