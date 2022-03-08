@@ -1,0 +1,21 @@
+---
+- hosts: all
+
+  vars:
+    homebrew_user: nicholas.the.personal
+    homebrew_group: admin
+    homebrew_upgrade_all_packages: true
+
+  tasks:
+    - debug:
+        msg: Hello, World!
+
+    - name: Clone the dotfile repo into the home directory `~`
+      git:
+        repo: https://github.com/NicholasTD07/dotfiles.git
+        dest: ~/
+        version: main
+
+  roles:
+    - geerlingguy.mac.homebrew
+

@@ -1,0 +1,10 @@
+---
+collections:
+  # Forked geerlingguy.mac (full clone of Homebrew)
+  # - Why use full clones with Homebrew?
+  #   See https://github.com/Homebrew/brew/pull/8883
+  # - Why it is in the `name` rather than in the `src`?
+  #   See: https://github.com/ansible/ansible/issues/61680
+  # It would be great if we can update the official document the following:
+  # "How to Install a collection from a git repo in the requirements.yml file"
+  -  name: git+https://github.com/NicholasTD07/ansible-collection-mac.git
