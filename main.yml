@@ -139,6 +139,13 @@
         - iterm2
         - moom
 
+        # gaming
+        - steam
+
+        # streaming
+        - obs
+        - loopback
+
         # MIA
         # mas 'DaisyDisk', id: 411643860
         # mas 'GIPHY CAPTURE', id: 668208984
