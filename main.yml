@@ -16,11 +16,24 @@
     - debug:
         msg: Hello, World!
 
+    - name: Check if the dotfile repo is there
+      stat:
+        path: ~/.git/
+      register: dotfile_repo
+
     - name: Clone the dotfile repo into the home directory `~`
+      shell:
+        cd ~
+        git init
+        git remote add origin https://github.com/NicholasTD07/dotfiles.git
+        git pull origin main
+
+    - name: Update the dotfile repo
       git:
         repo: https://github.com/NicholasTD07/dotfiles.git
         dest: ~/
         version: main
+      when: dotfile_repo.stat.exists
 
     - name: Set up Homebrew (and upgrade all packages)
       include_role:
