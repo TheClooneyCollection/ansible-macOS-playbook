@@ -6,6 +6,7 @@
     homebrew_group: admin
     homebrew_upgrade_all_packages: true
 
+  # Actually, this doesn't work since we don't wait for Vim to finish... Sad...
   handlers:
     - name: vim-has-initialized
       block:
