@@ -55,6 +55,12 @@
         - emacs-plus
         - libvterm # Is this needed though?
 
+    - name: Symlink the Emacs.app to /Applications
+      file:
+        src: /opt/homebrew/opt/emacs-plus/Emacs.app
+        dest: /Applications/Emacs.app
+        state: link
+
     - name: Check if Spacemacs has been initialized
       stat:
         path: ~/.emacs.d/
