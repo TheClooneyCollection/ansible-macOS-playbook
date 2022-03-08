@@ -7,6 +7,12 @@
     homebrew_upgrade_all_packages: true
 
   tasks:
+    - name: Password Test!
+      command: echo "Password test in progress..."
+      timeout: 1
+      become: true
+      changed_when: false
+
     - debug:
         msg: Hello, World!
 
