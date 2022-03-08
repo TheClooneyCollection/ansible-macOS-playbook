@@ -27,6 +27,7 @@
         git init
         git remote add origin https://github.com/NicholasTD07/dotfiles.git
         git pull origin main
+      when: not dotfile_repo.stat.exists
 
     - name: Update the dotfile repo
       git:
@@ -38,6 +39,37 @@
     - name: Set up Homebrew (and upgrade all packages)
       include_role:
         name: geerlingguy.mac.homebrew
+
+    # Because Spacemacs takes so long to finish its initial bootstrap,
+    # let's do it as early as we can.
+    - name: Tap the Emacs Plus repository
+      homebrew_tap:
+        name: d12frosted/emacs-plus
+
+    # Not sure whether libvterm is needed here...
+    - name: Install Emacs Plus
+      homebrew:
+        name: "{{ item }}"
+      loop:
+        - emacs-plus
+        - libvterm # Is this needed though?
+
+    - name: Check if Spacemacs has been initialized
+      stat:
+        path: ~/.emacs.d/
+      register: spacemacs_stat
+
+    - name: Bootstrap Spacemacs if it hasn't been initialized yet
+      block:
+        - git:
+            repo: https://github.com/syl20bnr/spacemacs.git
+            dest: ~/.emacs.d/
+            version: develop
+
+        - command: emacs &
+          async: 600 # Give Emacs 10 minutes to run
+          poll: 0 # in the background
+      when: not spacemacs_stat.stat.exists
 
     - name: Install Vim
       homebrew:
@@ -53,7 +85,7 @@
 
     - name: Bootstrap Vim plugins if plugins are not installed yet
       command: vim
-      async: 300 # Give vim 5 minutes to run
+      async: 90 # Give Vim one minute and half to run
       poll: 0 # in the background
       when: not vim_plugins_stat.stat.exists
 
@@ -73,29 +105,6 @@
           path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
           state: touch
       when: not YCM_compiled.stat.exists
-
-    - name: Tap the Emacs Plus repository
-      homebrew_tap:
-        name: d12frosted/emacs-plus
-
-    # Not sure whether libvterm is needed here...
-    - name: Install Emacs Plus
-      homebrew:
-        name: "{{ item }}"
-      loop:
-        - emacs-plus
-        - libvterm # Is this needed though?
-
-    - name: Check if Spacemacs has been initialized
-      stat:
-        path: ~/.emacs.d/
-      register: spacemacs_stat
-
-    - name: Bootstrap Spacemacs if it hasn't been initialized yet
-      command: emacs
-      async: 600 # Give Emacs 10 minutes to run
-      poll: 0 # in the background
-      when: not spacemacs_stat.stat.exists
 
     - name: Tap the fonts repository
       homebrew_tap:
