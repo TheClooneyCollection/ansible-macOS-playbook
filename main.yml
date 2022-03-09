@@ -203,6 +203,12 @@
         - font-source-code-pro
         - font-source-code-pro-for-powerline
 
+    - name: Install the fonts
+      copy:
+        src: "{{ item  }}"
+        dest: ~/Library/Fonts
+      with_fileglob:
+        - /Users/Shared/Fonts/*
 
     - name: Ensure Ansible is installed with Homebrew's pip
       pip:
