@@ -79,17 +79,16 @@
         path: ~/.emacs.d/
       register: spacemacs_stat
 
-    - name: Bootstrap Spacemacs if it hasn't been initialized yet
-      block:
-        - name: Clone Spacemacs into the ~/.emacs.d directory
-          git:
-            repo: https://github.com/syl20bnr/spacemacs.git
-            dest: ~/.emacs.d/
-            version: develop
+    - name: Keep Spacemacs up-to-date
+      git:
+        repo: https://github.com/syl20bnr/spacemacs.git
+        dest: ~/.emacs.d/
+        version: develop
 
-        - command: emacs &
-          async: 600 # Give Emacs 10 minutes to run
-          poll: 0 # in the background
+    - name: Bootstrap Spacemacs if it hasn't been initialized yet
+      command: emacs &
+      async: 600 # Give Emacs 10 minutes to run
+      poll: 0 # in the background
       when: not spacemacs_stat.stat.exists
 
     # Set up Vim #
