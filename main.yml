@@ -277,3 +277,14 @@
       command:
         cmd: "{{ brew_prefix.stdout }}/opt/fzf/install"
         creates: "~/.fzf.bash"
+
+    # Folder structure #
+
+    - name: Set up my folder structures
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - ~/proj
+        - ~/work
+        - ~/fork
