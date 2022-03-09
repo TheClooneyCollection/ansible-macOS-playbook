@@ -22,5 +22,5 @@ I try my best to automate as much as I can to set up my Macs for development wor
 
 This project is heavily inspired by other people's work, namely:
 
-- [ Jeff Geerling aka @geerlingguy](https://github.com/geerlingguy) 's [Mac Development Ansible Playbook](https://github.com/geerlingguy/mac-dev-playbook)
+- [Jeff Geerling aka @geerlingguy](https://github.com/geerlingguy) 's [Mac Development Ansible Playbook](https://github.com/geerlingguy/mac-dev-playbook)
 - [Patrick Quinn-Graham aka @thepatrick](https://github.com/thepatrick)'s [inventory](https://github.com/thepatrick/inventory)
