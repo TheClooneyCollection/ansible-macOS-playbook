@@ -2,6 +2,9 @@
 - hosts: all
 
   vars:
+    # For all homebrew related tasks,
+    # remember to add the `become` and `become_user` properties.
+    # So that this playbook can be used on a multiple users system.
     homebrew_user: nicholas.the.personal
     homebrew_group: admin
     homebrew_upgrade_all_packages: true
@@ -46,6 +49,8 @@
     - name: Tap the Emacs Plus repository
       homebrew_tap:
         name: d12frosted/emacs-plus
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
 
     # Not sure whether libvterm is needed here...
     - name: Install Emacs Plus
@@ -54,6 +59,8 @@
       loop:
         - emacs-plus
         - libvterm # Is this needed though?
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
 
     - name: Symlink the Emacs.app to /Applications
       file:
@@ -85,6 +92,8 @@
       loop:
         - vim
         - cmake # needed by YouCompleteMe
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
 
     - name: Check if Vim plugins are installed
       stat:
@@ -121,11 +130,15 @@
     - name: Tap the fonts repository
       homebrew_tap:
         name: homebrew/cask-fonts
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
 
     - name: Install Homebrew packages
       homebrew:
         name: "{{ item }}"
         state: present
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
       loop:
         # commandline utilities
         - fish
@@ -160,6 +173,8 @@
       homebrew_cask:
         name: "{{ item }}"
         state: present
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
       loop:
         # macOS must-haves
         - 1password
@@ -197,6 +212,8 @@
         state: present
         install_options:
           - 'fontdir=/Users/Shared/Fonts'
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
       loop:
         # fonts
         - font-inconsolata-g-for-powerline
