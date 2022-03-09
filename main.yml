@@ -19,6 +19,8 @@
     - debug:
         msg: Hello, World!
 
+    # Set up the dotfile repo #
+
     - name: Check if the dotfile repo is there
       stat:
         path: ~/.git/
@@ -40,9 +42,13 @@
         version: main
       when: dotfile_repo.stat.exists
 
+    # Set up Homebrew #
+
     - name: Set up Homebrew (and upgrade all packages)
       include_role:
         name: geerlingguy.mac.homebrew
+
+    # Set up Spacemacs #
 
     # Because Spacemacs takes so long to finish its initial bootstrap,
     # let's do it as early as we can.
@@ -86,6 +92,9 @@
           poll: 0 # in the background
       when: not spacemacs_stat.stat.exists
 
+    # Set up Vim #
+    # Caveats: Vim's plugins aren't installed after this...
+
     - name: Install Vim
       homebrew:
         name: "{{ item }}"
@@ -127,11 +136,7 @@
           state: touch
       when: vim_plugins_stat.stat.exists and not YCM_compiled.stat.exists
 
-    - name: Tap the fonts repository
-      homebrew_tap:
-        name: homebrew/cask-fonts
-      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-      become_user: "{{ homebrew_user }}"
+    # Install Homebrew packages and casks #
 
     - name: Install Homebrew packages
       homebrew:
@@ -206,6 +211,14 @@
         # mas 'GIPHY CAPTURE', id: 668208984
         # mas 'Disk Care', id: 913724705
 
+    # Install fonts #
+
+    - name: Tap the fonts repository
+      homebrew_tap:
+        name: homebrew/cask-fonts
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
+
     - name: Install Homebrew Font Casks (that can be shared with other users)
       homebrew_cask:
         name: "{{ item }}"
@@ -227,11 +240,15 @@
       with_fileglob:
         - /Users/Shared/Fonts/*
 
+    # Install Ansible #
+
     - name: Ensure Ansible is installed with Homebrew's pip
       pip:
         name: ansible
       vars:
         extra_path: /opt/homebrew/bin
+
+    # Set up fishshell as the default shell #
 
     - name: Get fishshell's path
       command: which fish
