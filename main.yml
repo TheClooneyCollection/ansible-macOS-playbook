@@ -172,9 +172,6 @@
         - swiftlint
         - swiftformat
 
-        # misc
-        - svn # need by the font casks
-
     - name: Install Homebrew Casks
       homebrew_cask:
         name: "{{ item }}"
@@ -213,6 +210,13 @@
         # mas 'Disk Care', id: 913724705
 
     # Install fonts #
+
+    - name: Install svn for fonts
+      homebrew:
+        name: svn
+        state: present
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
 
     - name: Tap the fonts repository
       homebrew_tap:
