@@ -265,3 +265,16 @@
         name: "{{ ansible_user_id }}"
         shell: "{{ fish.stdout }}"
       become: true
+
+
+    # Configure fzf #
+
+    - name: Get Homebrew's prefix
+      command: brew --prefix
+      register: brew_prefix
+      changed_when: false
+
+    - name: Configure fzf
+      command:
+        cmd: "{{ brew_prefix.stdout }}/opt/fzf/install"
+        creates: "~/.fzf.bash"
