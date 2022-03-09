@@ -21,26 +21,26 @@
 
     # Set up the dotfile repo #
 
-    - name: Check if the dotfile repo is there
-      stat:
-        path: ~/.git/
-      register: dotfile_repo
-
     - name: Clone the dotfile repo into the home directory `~`
-      shell: |
-        cd ~
-        git init
-        git remote add origin https://github.com/NicholasTD07/dotfiles.git
-        git fetch origin
-        git checkout -b main origin/main
-      when: not dotfile_repo.stat.exists
+      shell:
+        cmd: |
+          cd ~
+          git init
+          git remote add origin https://github.com/NicholasTD07/dotfiles.git
+          git fetch origin
+          git checkout -b main origin/main
+        creates: ~/.git
+      register: cloned_dotfile
 
     - name: Update the dotfile repo
       git:
         repo: https://github.com/NicholasTD07/dotfiles.git
         dest: ~/
         version: main
-      when: dotfile_repo.stat.exists
+      when: not cloned_dotfile.changed
+      # Note: `cloned_dotfile is skipped` does not work here.
+      # I assume that's because the `shell` module always runs.
+
 
     # Set up Homebrew #
 
