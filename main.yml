@@ -7,7 +7,6 @@
     # So that this playbook can be used on a multiple users system.
     homebrew_user: nicholas.the.personal
     homebrew_group: admin
-    homebrew_upgrade_all_packages: true
 
   tasks:
     - name: Let me check your password first
@@ -41,12 +40,13 @@
       # Note: `cloned_dotfile is skipped` does not work here.
       # I assume that's because the `shell` module always runs.
 
-
     # Set up Homebrew #
 
     - name: Set up Homebrew (and upgrade all packages)
       include_role:
         name: geerlingguy.mac.homebrew
+      vars:
+        homebrew_upgrade_all_packages: true
 
     # Set up Spacemacs #
 
