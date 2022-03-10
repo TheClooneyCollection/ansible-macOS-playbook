@@ -235,6 +235,7 @@
     - name: Get fishshell's path
       command: which fish
       register: fish
+      changed_when: false
 
     - name: Ensure fishshell is included in /etc/shells
       lineinfile:
