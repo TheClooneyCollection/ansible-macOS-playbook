@@ -31,12 +31,16 @@
         creates: ~/.git
       register: cloned_dotfile
 
+    # Using the `git` module will reset local branch to the main in remote
+    # which sometimes will drop local commits that haven't been pushed into remote yet...
+    # which is why we are just doing `git pull --rebase` here...
     - name: Update the dotfile repo
-      git:
-        repo: https://github.com/NicholasTD07/dotfiles.git
-        dest: ~/
-        version: main
+      command:
+        cmd: git pull --rebase
+        chdir: ~/
       when: not cloned_dotfile.changed
+      register: updated_dotfile
+      changed_when: '"Already up to date" not in updated_dotfile.stdout'
       # Note: `cloned_dotfile is skipped` does not work here.
       # I assume that's because the `shell` module always runs.
 
