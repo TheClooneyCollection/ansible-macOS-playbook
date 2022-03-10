@@ -209,41 +209,14 @@
         # mas 'GIPHY CAPTURE', id: 668208984
         # mas 'Disk Care', id: 913724705
 
-    # Install fonts #
-
-    - name: Install svn for fonts
-      homebrew:
-        name: svn
-        state: present
-      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-      become_user: "{{ homebrew_user }}"
-
-    - name: Tap the fonts repository
-      homebrew_tap:
-        name: homebrew/cask-fonts
-      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-      become_user: "{{ homebrew_user }}"
-
-    - name: Install Homebrew Font Casks (that can be shared with other users)
-      homebrew_cask:
-        name: "{{ item }}"
-        state: present
-        install_options:
-          - 'fontdir=/Users/Shared/Fonts'
-      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-      become_user: "{{ homebrew_user }}"
-      loop:
-        # fonts
-        - font-inconsolata-g-for-powerline
-        - font-source-code-pro
-        - font-source-code-pro-for-powerline
-
-    - name: Install the fonts
-      copy:
-        src: "{{ item  }}"
-        dest: ~/Library/Fonts
-      with_fileglob:
-        - /Users/Shared/Fonts/*
+    - name: Install shared fonts
+      include_role:
+        name: shared_fonts
+      vars:
+        fonts:
+          - font-inconsolata-g-for-powerline
+          - font-source-code-pro
+          - font-source-code-pro-for-powerline
 
     # Install Ansible #
 
