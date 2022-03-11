@@ -226,13 +226,22 @@
           - font-source-code-pro
           - font-source-code-pro-for-powerline
 
-    # Install Ansible #
+    # Set up Python development environment #
 
     - name: Ensure Ansible is installed with Homebrew's pip
       pip:
         name: ansible
       vars:
         extra_path: /opt/homebrew/bin
+
+    # It's much easier to install poetry with Homebrew
+    # Then using the installer...
+    # For some reason it really like the `~/Library/Python/3.9/bin` path...
+    - name: Install poetry
+      homebrew:
+        name: poetry
+      become: true
+      become_user: "{{ homebrew_user }}"
 
     # Set up fishshell as the default shell #
 
@@ -252,7 +261,6 @@
         name: "{{ ansible_user_id }}"
         shell: "{{ fish.stdout }}"
       become: true
-
 
     # Configure fzf #
 
