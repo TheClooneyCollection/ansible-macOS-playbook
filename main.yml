@@ -51,6 +51,10 @@
         name: geerlingguy.mac.homebrew
       vars:
         homebrew_upgrade_all_packages: true
+        # homebrew_installed_packages:
+        # homebrew_uninstalled_packages:
+        # homebrew_cask_apps:
+        # homebrew_cask_uninstalled_apps:
 
     # Set up Spacemacs #
 
