@@ -276,3 +276,27 @@
         - ~/proj
         - ~/work
         - ~/fork
+
+    # Configure my Dock #
+
+    - name: Don't you dare to bounce (Dock icons, I am talking to you)
+      osx_defaults:
+        domain: com.apple.dock
+        key: no-bouncing
+        type: bool
+        value: true
+        state: present
+      register: dock_no_bounce
+
+    - name: Only show me running apps in the Dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: static-only
+        type: bool
+        value: true
+        state: present
+      register: dock_only_running_apps
+
+    - name: Kill it! Kill it now! (Dock)
+      command: killall Dock
+      when: dock_no_bounce is changed or dock_only_running_apps is changed
