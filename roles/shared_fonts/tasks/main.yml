@@ -14,7 +14,7 @@
       name: "{{ item }}"
       state: present
       install_options:
-        - "fontdir={{ homebrew_fonts_directory}}"
+        - "fontdir={{ homebrew_fonts_directory }}"
     loop: "{{ fonts }}"
     when: state == 'present'
 

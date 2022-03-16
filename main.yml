@@ -5,7 +5,7 @@
     # For all homebrew related tasks,
     # remember to add the `become` and `become_user` properties.
     # So that this playbook can be used on a multiple users system.
-    homebrew_user: nicholas.the.personal
+    homebrew_user: nicholas.tian
     homebrew_group: admin
 
   tasks:
@@ -196,6 +196,7 @@
         # work / life?
         - zoom
         - slack # needed for the huddles
+        - docker
 
         # macOS quality of life improvements
         - alfred
