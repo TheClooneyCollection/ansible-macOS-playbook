@@ -169,6 +169,7 @@
 
         # languages
         - python
+        - ipython
         - rbenv
         - node
         - yarn
@@ -179,6 +180,10 @@
 
         - swiftlint
         - swiftformat
+
+        # dev support
+
+        - go-task/tap/go-task
 
     - name: Install Homebrew Casks
       homebrew_cask:
