@@ -7,6 +7,10 @@
     # So that this playbook can be used on a multiple users system.
     homebrew_user: nicholas.tian
     homebrew_group: admin
+    ssh_type: ed25519
+    ssh_rounds: 256
+    ssh_private_key_path: "~/.ssh/id_{{ ssh_type }}"
+    ssh_keygen_command: "ssh-keygen -o -t {{ ssh_type }} -a {{ ssh_rounds }} -N '{{ passphrase.user_input }}' -f {{ ssh_private_key_path }}"
 
   tasks:
     - name: Let me check your password first
@@ -43,6 +47,27 @@
       changed_when: '"Already up to date" not in updated_dotfile.stdout'
       # Note: `cloned_dotfile is skipped` does not work here.
       # I assume that's because the `shell` module always runs.
+
+    # Set up SSH key pair #
+    - name: Check if SSH key pair exists
+      stat:
+        path: "{{ ssh_private_key_path }}"
+      register: ssh_private_key
+
+    - name: Set up SSH key pair
+      block:
+
+        - name: Get the passphrase for the SSH key pair
+          pause:
+            prompt: "Enter the passphrase"
+            echo: no
+          register: passphrase
+
+        - name: Generate the SSH key pair
+          command: "{{ ssh_keygen_command }}"
+
+      when: not ssh_private_key.stat.exists
+      no_log: true
 
     # Set up Homebrew #
 
@@ -132,6 +157,7 @@
 
     - name: Compile YouCompleteMe
       block:
+
       - name: Compile YouCompleteMe
         command:
           cmd: python3 install.py
@@ -141,6 +167,7 @@
         file:
           path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
           state: touch
+
       when: vim_plugins_stat.stat.exists and not YCM_compiled.stat.exists
 
     # Install Homebrew packages and casks #
