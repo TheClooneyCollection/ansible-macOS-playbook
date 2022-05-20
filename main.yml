@@ -6,7 +6,6 @@
     # remember to add the `become` and `become_user` properties.
     # So that this playbook can be used on a multiple users system.
 
-
     homebrew_user: "{{ ansible_user_id }}"
     homebrew_group: admin
 
@@ -78,7 +77,7 @@
       include_role:
         name: geerlingguy.mac.homebrew
       vars:
-        homebrew_upgrade_all_packages: true
+        homebrew_upgrade_all_packages: false # add a var to override
         # homebrew_installed_packages:
         # homebrew_uninstalled_packages:
         # homebrew_cask_apps:
@@ -270,9 +269,13 @@
         # gaming
         - steam
 
-        # streaming
+        # streaming / recording
         - obs
         - loopback
+        - vlc
+
+        # lightroom
+        - adobe-creative-cloud
 
         # MIA
         # mas 'DaisyDisk', id: 411643860
