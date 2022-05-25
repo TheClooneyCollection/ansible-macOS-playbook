@@ -5,8 +5,11 @@
     # For all homebrew related tasks,
     # remember to add the `become` and `become_user` properties.
     # So that this playbook can be used on a multiple users system.
-    homebrew_user: nicholas.tian
+
+
+    homebrew_user: "{{ ansible_user_id }}"
     homebrew_group: admin
+
     ssh_type: ed25519
     ssh_rounds: 256
     ssh_private_key_path: "~/.ssh/id_{{ ssh_type }}"
@@ -101,9 +104,14 @@
       become: "{{ (homebrew_user != ansible_user_id) | bool }}"
       become_user: "{{ homebrew_user }}"
 
+    - name: Get Homebrew's prefix
+      command: brew --prefix
+      register: brew_prefix
+      changed_when: false
+
     - name: Symlink the Emacs.app to /Applications
       file:
-        src: /opt/homebrew/opt/emacs-plus/Emacs.app
+        src: "{{ brew_prefix.stdout }}/opt/emacs-plus/Emacs.app"
         dest: /Applications/Emacs.app
         state: link
 
@@ -172,6 +180,10 @@
 
     # Install Homebrew packages and casks #
 
+    - name: Tap Tap Tap
+      homebrew_tap:
+        name: homebrew/cask-versions
+
     - name: Install Homebrew packages
       homebrew:
         name: "{{ item }}"
@@ -205,12 +217,28 @@
 
         - carthage # Until SPM solves its binary caches on CI, carthage is our friend...
 
-        - swiftlint
         - swiftformat
 
         # dev support
 
         - go-task/tap/go-task
+
+
+    - name: Check whether Xcode exists
+      command:
+        cmd: xcodebuild --version
+      ignore_errors: true
+      register: xcodebuild
+
+    - name: Install Homebrew packages requiring Xcode
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
+      loop:
+        - swiftlint
+      when: xcodebuild is succeeded
 
     - name: Install Homebrew Casks
       homebrew_cask:
@@ -220,7 +248,7 @@
       become_user: "{{ homebrew_user }}"
       loop:
         # macOS must-haves
-        - 1password
+        - 1password7
         - dropbox
         - firefox
         # - little-snitch
@@ -266,7 +294,7 @@
       pip:
         name: ansible
       vars:
-        extra_path: /opt/homebrew/bin
+        extra_path: "{{ brew_prefix.stdout }}/bin"
 
     # It's much easier to install poetry with Homebrew
     # Then using the installer...
@@ -298,11 +326,6 @@
 
     # Configure fzf #
 
-    - name: Get Homebrew's prefix
-      command: brew --prefix
-      register: brew_prefix
-      changed_when: false
-
     - name: Configure fzf
       command:
         cmd: "{{ brew_prefix.stdout }}/opt/fzf/install"
@@ -320,6 +343,15 @@
         - ~/fork
 
     # Configure my Dock #
+
+    - name: Duck!
+      osx_defaults:
+        domain: com.apple.dock
+        key: autohide
+        type: bool
+        value: true
+        state: present
+      register: dock_duck
 
     - name: Don't you dare to bounce (Dock icons, I am talking to you)
       osx_defaults:
@@ -341,4 +373,4 @@
 
     - name: Kill it! Kill it now! (Dock)
       command: killall Dock
-      when: dock_no_bounce is changed or dock_only_running_apps is changed
+      when: dock_no_bounce is changed or dock_only_running_apps is changed or dock_duck is changed
