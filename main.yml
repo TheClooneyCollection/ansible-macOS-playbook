@@ -250,6 +250,7 @@
         # macOS must-haves
         - 1password7
         - dropbox
+        - google-drive
         - firefox
         # - little-snitch
 
