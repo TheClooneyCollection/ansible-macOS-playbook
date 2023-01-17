@@ -248,6 +248,7 @@
       become_user: "{{ homebrew_user }}"
       loop:
         # macOS must-haves
+
         - 1password7
         - dropbox
         - google-drive
@@ -280,6 +281,8 @@
         - obs
         - loopback
         - vlc
+        - homebrew/cask-drivers/elgato-stream-deck
+        - homebrew/cask-drivers/elgato-wave-link
 
         # lightroom
 
