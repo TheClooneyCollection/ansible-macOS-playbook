@@ -226,7 +226,7 @@
 
     - name: Check whether Xcode exists
       command:
-        cmd: xcodebuild --version
+        cmd: xcodebuild -version
       ignore_errors: true
       register: xcodebuild
 
