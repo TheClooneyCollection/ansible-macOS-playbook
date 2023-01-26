@@ -247,6 +247,7 @@
       become: "{{ (homebrew_user != ansible_user_id) | bool }}"
       become_user: "{{ homebrew_user }}"
       loop:
+
         # macOS must-haves
 
         - 1password7
@@ -287,6 +288,9 @@
         # lightroom
 
         - adobe-creative-cloud
+
+        # drivers
+        - homebrew/cask-drivers/logitech-control-center
 
         # MIA
 
