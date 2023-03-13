@@ -250,11 +250,12 @@
 
         # macOS must-haves
 
-        - 1password7
+        - 1password
         - dropbox
         - google-drive
         - firefox
         - amethyst
+        - sublime-text
         # - little-snitch
 
         # work / life?
@@ -280,7 +281,9 @@
         # streaming / recording
 
         - obs
+        - audio-hijack
         - loopback
+
         - vlc
         - homebrew/cask-drivers/elgato-stream-deck
         - homebrew/cask-drivers/elgato-wave-link
