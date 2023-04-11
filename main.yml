@@ -264,6 +264,7 @@
         - zoom
         - slack # needed for the huddles
         - docker
+        - protonvpn
 
         # macOS quality of life improvements
 
