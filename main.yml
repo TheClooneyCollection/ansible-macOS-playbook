@@ -54,6 +54,7 @@
       stat:
         path: "{{ ssh_private_key_path }}"
       register: ssh_private_key
+      tags: ssh
 
     - name: Set up SSH key pair
       block:
@@ -69,6 +70,7 @@
 
       when: not ssh_private_key.stat.exists
       no_log: true
+      tags: ssh
 
     # End of Set up SSH key pair #
 
