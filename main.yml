@@ -216,7 +216,7 @@
         # Swift
 
         - carthage # Until SPM solves its binary caches on CI, carthage is our friend...
-
+        - swiftgen
         - swiftformat
 
         # dev support
@@ -253,6 +253,7 @@
         - 1password
         - dropbox
         - google-drive
+        - cryptomator
         - firefox
         - amethyst
         - sublime-text
@@ -293,7 +294,6 @@
         - adobe-creative-cloud
 
         # drivers
-        - homebrew/cask-drivers/logitech-control-center
 
         # MIA
 
