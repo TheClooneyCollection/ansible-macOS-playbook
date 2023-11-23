@@ -259,6 +259,7 @@
         - firefox
         - amethyst
         - sublime-text
+        - obsidian
         # - little-snitch
 
         # work / life?
@@ -322,13 +323,19 @@
         extra_path: "{{ brew_prefix.stdout }}/bin"
 
     # It's much easier to install poetry with Homebrew
-    # Then using the installer...
+    # Than using the installer...
     # For some reason it really like the `~/Library/Python/3.9/bin` path...
     - name: Install poetry
       homebrew:
         name: poetry
       become: true
       become_user: "{{ homebrew_user }}"
+
+    - name: Set Up The Root Virtual Environment
+      command:
+        cmd: poetry install --no-root
+        chdir: ~/
+        creates: ~/poetry.lock
 
     # Set up fishshell as the default shell #
 
@@ -354,7 +361,7 @@
     - name: Configure fzf
       command:
         cmd: "{{ brew_prefix.stdout }}/opt/fzf/install"
-        creates: "~/.fzf.bash"
+        creates: ~/.fzf.bash
 
     # Folder structure #
 
