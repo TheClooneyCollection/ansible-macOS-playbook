@@ -178,10 +178,6 @@
 
     # Install Homebrew packages and casks #
 
-    - name: Tap Tap Tap
-      homebrew_tap:
-        name: homebrew/cask-versions
-
     - name: Install Homebrew packages
       homebrew:
         name: "{{ item }}"
@@ -290,8 +286,8 @@
         - loopback
 
         - vlc
-        - homebrew/cask-drivers/elgato-stream-deck
-        - homebrew/cask-drivers/elgato-wave-link
+        - elgato-stream-deck
+        - elgato-wave-link
 
         # lightroom
 
