@@ -1,4 +1,8 @@
-# ansible-macOS-playbook
+# ansible-macOS-playbook (ARCHIVED)
+
+This has become part of https://github.com/NicholasTD07/dotfiles. And... Soon that will be moved around again. (Spoilers! 🤫)
+
+# Original Content
 
 I try my best to automate as much as I can to set up my Macs for development work.
 
