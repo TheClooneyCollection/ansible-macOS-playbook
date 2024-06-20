@@ -203,10 +203,13 @@
 
         - fish
         - tree
+        - zoxide # cd is lame, comparatively. zoxide is awesome.
+        - thefuck
 
         # git
 
         - git
+        - gh # github
         - git-lfs
         - ydiff # needed by git for diffing
 
@@ -227,14 +230,9 @@
 
         # Swift
 
-        - carthage # Until SPM solves its binary caches on CI, carthage is our friend...
+        # - carthage # Until SPM solves its binary caches on CI, carthage is our friend...
         - swiftgen
         - swiftformat
-
-        # dev support
-
-        - go-task/tap/go-task
-
 
     - name: Check whether Xcode exists
       command:
@@ -264,30 +262,29 @@
 
         - 1password
         - dropbox
-        - google-drive
-        - cryptomator
         - firefox
-        - amethyst
         - sublime-text
         - obsidian
         # - little-snitch
 
         # work / life?
 
-        - zoom
-        - slack # needed for the huddles
-        - docker
+        # - zoom
+        # - slack # needed for the huddles
+        # - docker
+        # - jq
+
         - protonvpn
 
         # macOS quality of life improvements
 
         - alfred
-        - bartender
+        # - bartender
         - caffeine
         - istat-menus
         - iterm2
-        - moom
-        - lunar
+        # - moom
+        # - lunar
 
         # gaming
 
@@ -296,18 +293,15 @@
         # streaming / recording
 
         - obs
-        - audio-hijack
+        # - audio-hijack
         - loopback
 
         - vlc
-        - elgato-stream-deck
-        - elgato-wave-link
+        # - elgato-stream-deck
 
         # lightroom
 
-        - adobe-creative-cloud
-
-        # drivers
+        # - adobe-creative-cloud
 
         # MIA
 
