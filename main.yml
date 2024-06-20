@@ -9,6 +9,7 @@
     homebrew_user: "{{ ansible_user_id }}"
     homebrew_group: admin
 
+    generate_ssh: false
     ssh_type: ed25519
     ssh_rounds: 256
     ssh_private_key_path: "~/.ssh/id_{{ ssh_type }}"
@@ -53,29 +54,30 @@
 
     # Set up SSH key pair #
 
-    - name: Check if SSH key pair exists
-      stat:
-        path: "{{ ssh_private_key_path }}"
-      register: ssh_private_key
-      tags: ssh
-
     - name: Set up SSH key pair
+      tags: ssh
+      when: generate_ssh
       block:
 
-        - name: Get the passphrase for the SSH key pair
-          pause:
-            prompt: "Enter the passphrase"
-            echo: no
-          register: passphrase
+      - name: Check if SSH key pair exists
+        stat:
+          path: "{{ ssh_private_key_path }}"
+        register: ssh_private_key
 
-        - name: Generate the SSH key pair
-          command: "{{ ssh_keygen_command }}"
+      - name: Set up SSH key pair
+        block:
 
-      when: not ssh_private_key.stat.exists
-      no_log: true
-      tags: ssh
+          - name: Get the passphrase for the SSH key pair
+            pause:
+              prompt: "Enter the passphrase"
+              echo: no
+            register: passphrase
 
-    # End of Set up SSH key pair #
+          - name: Generate the SSH key pair
+            command: "{{ ssh_keygen_command }}"
+
+        when: not ssh_private_key.stat.exists
+        no_log: true
 
     - name: Set up Homebrew (and upgrade all packages)
       include_role:
