@@ -84,51 +84,10 @@
         # homebrew_cask_apps:
         # homebrew_cask_uninstalled_apps:
 
-    # Because Spacemacs takes so long to finish its initial bootstrap,
-    # let's do it as early as we can.
-    - name: Tap the Emacs Plus repository
-      homebrew_tap:
-        name: d12frosted/emacs-plus
-      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-      become_user: "{{ homebrew_user }}"
-
-    # Not sure whether libvterm is needed here...
-    - name: Install Emacs Plus
-      homebrew:
-        name: "{{ item }}"
-      loop:
-        - emacs-plus
-        - libvterm # Is this needed though?
-      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-      become_user: "{{ homebrew_user }}"
-
     - name: Get Homebrew's prefix
       command: brew --prefix
       register: brew_prefix
       changed_when: false
-
-    - name: Symlink the Emacs.app to /Applications
-      file:
-        src: "{{ brew_prefix.stdout }}/opt/emacs-plus/Emacs.app"
-        dest: /Applications/Emacs.app
-        state: link
-
-    - name: Check if Spacemacs has been initialized
-      stat:
-        path: ~/.emacs.d/
-      register: spacemacs_stat
-
-    - name: Keep Spacemacs up-to-date
-      git:
-        repo: https://github.com/syl20bnr/spacemacs.git
-        dest: ~/.emacs.d/
-        version: develop
-
-    - name: Bootstrap Spacemacs if it hasn't been initialized yet
-      command: emacs &
-      async: 600 # Give Emacs 10 minutes to run
-      poll: 0 # in the background
-      when: not spacemacs_stat.stat.exists
 
     # Set up Vim #
     # Caveats: Vim's plugins aren't installed after this...
@@ -146,6 +105,8 @@
       stat:
         path: ~/.vim-plugins/
       register: vim_plugins_stat
+    # Because Spacemacs takes so long to finish its initial bootstrap,
+    # let's do it as early as we can.
 
     - name: Bootstrap Vim plugins if plugins are not installed yet
       command: vim
@@ -155,6 +116,46 @@
 
     # Caveat: Due to the nature of how Vim and its plugins are installed,
     # YouCompleteMe won't be installed on the first run of the playbook...
+    - name: Spacemacs Block
+      tags: spacemacs
+      block:
+      - name: Tap the Emacs Plus repository
+        homebrew_tap:
+          name: d12frosted/emacs-plus
+        become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+        become_user: "{{ homebrew_user }}"
+
+      - name: Install Emacs Plus
+        homebrew:
+          name: emacs-plus@30
+          install_options: with-elrumo2-icon
+        become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+        become_user: "{{ homebrew_user }}"
+
+      - name: Start Emacs Plus Service
+        command: brew services start d12frosted/emacs-plus/emacs-plus@30
+        register: start_emacs_service
+        changed_when: '"Successfully started" in start_emacs_service.stdout'
+        tags: test
+
+      - name: Symlink the Emacs.app to /Applications
+        file:
+          src: "{{ brew_prefix.stdout }}/opt/emacs-plus@30/Emacs.app"
+          dest: /Applications/Emacs.app
+          state: link
+
+      - name: Check if Spacemacs has been initialized
+        stat:
+          path: ~/.emacs.d/
+        register: spacemacs_stat
+
+      - name: Keep Spacemacs up-to-date
+        git:
+          repo: https://github.com/syl20bnr/spacemacs.git
+          dest: ~/.emacs.d/
+          version: develop
+
+        poll: 0 # in the background
 
     - name: Check if YouCompleteMe has been compiled
       stat:
