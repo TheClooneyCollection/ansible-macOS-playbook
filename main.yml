@@ -29,9 +29,9 @@
         cmd: |
           cd ~
           git init
-          git remote add origin https://github.com/NicholasTD07/dotfiles.git
+          git remote add origin https://github.com/TheClooneyCollection/dotfiles.git
           git fetch origin
-          git checkout -b main origin/main
+          git switch -c main --track origin/main
         creates: ~/.git
       register: cloned_dotfile
 
