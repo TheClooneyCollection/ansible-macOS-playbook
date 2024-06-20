@@ -78,7 +78,7 @@
       include_role:
         name: geerlingguy.mac.homebrew
       vars:
-        homebrew_upgrade_all_packages: false # add a var to override
+        # homebrew_upgrade_all_packages: false # add a var to override
         # homebrew_installed_packages:
         # homebrew_uninstalled_packages:
         # homebrew_cask_apps:
