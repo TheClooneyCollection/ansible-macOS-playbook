@@ -5,10 +5,6 @@
       name: svn
       state: "{{ state }}"
 
-  - name: Tap the fonts repository
-    homebrew_tap:
-      name: homebrew/cask-fonts
-
   - name: Install Homebrew Font Casks (that can be shared with other users)
     homebrew_cask:
       name: "{{ item }}"
