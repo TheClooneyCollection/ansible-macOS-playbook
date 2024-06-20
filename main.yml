@@ -374,9 +374,9 @@
         path: "{{ item }}"
         state: directory
       loop:
-        - ~/proj
-        - ~/work
-        - ~/fork
+        - ~/Source/Projects
+        - ~/Source/Forks
+        - ~/Source/Work
 
     # Configure my Dock #
 
