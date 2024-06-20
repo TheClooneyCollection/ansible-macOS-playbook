@@ -34,6 +34,7 @@
           git switch -c main --track origin/main
         creates: ~/.git
       register: cloned_dotfile
+      tags: dotfiles
 
     # Using the `git` module will reset local branch to the main in remote
     # which sometimes will drop local commits that haven't been pushed into remote yet...
@@ -47,6 +48,8 @@
       changed_when: '"Already up to date" not in updated_dotfile.stdout'
       # Note: `cloned_dotfile is skipped` does not work here.
       # I assume that's because the `shell` module always runs.
+      tags: dotfiles
+
 
     # Set up SSH key pair #
 
@@ -233,6 +236,7 @@
         # - carthage # Until SPM solves its binary caches on CI, carthage is our friend...
         - swiftgen
         - swiftformat
+      tags: homebrew
 
     - name: Check whether Xcode exists
       command:
@@ -249,6 +253,7 @@
       loop:
         - swiftlint
       when: xcodebuild is succeeded
+      tags: homebrew
 
     - name: Install Homebrew Casks
       homebrew_cask:
@@ -309,6 +314,8 @@
         # mas 'GIPHY CAPTURE', id: 668208984
         # mas 'Disk Care', id: 913724705
 
+      tags: homebrew
+
     - name: Install shared fonts
       include_role:
         name: shared_fonts
@@ -317,6 +324,7 @@
           - font-inconsolata-g-for-powerline
           - font-source-code-pro
           - font-source-code-pro-for-powerline
+      tags: homebrew
 
     # Set up Python development environment #
 
@@ -325,6 +333,7 @@
         name: ansible
       vars:
         extra_path: "{{ brew_prefix.stdout }}/bin"
+      tags: ansible
 
     # It's much easier to install poetry with Homebrew
     # Than using the installer...
@@ -334,12 +343,14 @@
         name: poetry
       become: true
       become_user: "{{ homebrew_user }}"
+      tags: poetry
 
     - name: Set Up The Root Virtual Environment
       command:
         cmd: poetry install --no-root
         chdir: ~/
         creates: ~/poetry.lock
+      tags: poetry
 
     # Set up fishshell as the default shell #
 
@@ -347,18 +358,21 @@
       command: which fish
       register: fish
       changed_when: false
+      tags: fishshell
 
     - name: Ensure fishshell is included in /etc/shells
       lineinfile:
         path: /etc/shells
         line: "{{ fish.stdout }}"
       become: true
+      tags: fishshell
 
     - name: Ensure current user's default shell is fish
       user:
         name: "{{ ansible_user_id }}"
         shell: "{{ fish.stdout }}"
       become: true
+      tags: fishshell
 
     # Configure fzf #
 
@@ -366,6 +380,7 @@
       command:
         cmd: "{{ brew_prefix.stdout }}/opt/fzf/install"
         creates: ~/.fzf.bash
+      tags: fzf
 
     # Folder structure #
 
@@ -377,6 +392,7 @@
         - ~/Source/Projects
         - ~/Source/Forks
         - ~/Source/Work
+      tags: folder
 
     # Configure my Dock #
 
@@ -388,6 +404,7 @@
         value: true
         state: present
       register: dock_duck
+      tags: dock
 
     - name: Don't you dare to bounce (Dock icons, I am talking to you)
       osx_defaults:
@@ -397,6 +414,7 @@
         value: true
         state: present
       register: dock_no_bounce
+      tags: dock
 
     - name: Only show me running apps in the Dock
       osx_defaults:
@@ -406,7 +424,9 @@
         value: true
         state: present
       register: dock_only_running_apps
+      tags: dock
 
     - name: Kill it! Kill it now! (Dock)
       command: killall Dock
       when: dock_no_bounce is changed or dock_only_running_apps is changed or dock_duck is changed
+      tags: dock
