@@ -83,39 +83,20 @@
         # homebrew_uninstalled_packages:
         # homebrew_cask_apps:
         # homebrew_cask_uninstalled_apps:
+      tags:
+        - homebrew
+        - homebrew-setup
 
     - name: Get Homebrew's prefix
       command: brew --prefix
       register: brew_prefix
       changed_when: false
+      tags:
+        - homebrew
 
-    # Set up Vim #
-    # Caveats: Vim's plugins aren't installed after this...
-
-    - name: Install Vim
-      homebrew:
-        name: "{{ item }}"
-      loop:
-        - vim
-        - cmake # needed by YouCompleteMe
-      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-      become_user: "{{ homebrew_user }}"
-
-    - name: Check if Vim plugins are installed
-      stat:
-        path: ~/.vim-plugins/
-      register: vim_plugins_stat
     # Because Spacemacs takes so long to finish its initial bootstrap,
     # let's do it as early as we can.
 
-    - name: Bootstrap Vim plugins if plugins are not installed yet
-      command: vim
-      async: 90 # Give Vim one minute and half to run
-      poll: 0 # in the background
-      when: not vim_plugins_stat.stat.exists
-
-    # Caveat: Due to the nature of how Vim and its plugins are installed,
-    # YouCompleteMe won't be installed on the first run of the playbook...
     - name: Spacemacs Block
       tags: spacemacs
       block:
@@ -155,27 +136,59 @@
           dest: ~/.emacs.d/
           version: develop
 
-        poll: 0 # in the background
+    # Set up Vim #
+    # Caveats: Vim's plugins aren't installed after this...
 
-    - name: Check if YouCompleteMe has been compiled
-      stat:
-        path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
-      register: YCM_compiled
-
-    - name: Compile YouCompleteMe
+    - name: Vim Block
+      tags: vim
       block:
+      - name: Install Vim
+        homebrew:
+          name: "{{ item }}"
+        loop:
+          - vim
+          - cmake # needed by YouCompleteMe
+        become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+        become_user: "{{ homebrew_user }}"
+
+      - name: Check if Vim plugins are installed
+        stat:
+          path: ~/.vim-plugins/
+        register: vim_plugins_stat
+
+      - name: Bootstrap Vim plugins if plugins are not installed yet
+        command: vim
+        async: 90 # Give Vim one minute and half to run
+        poll: 0 # in the background
+        when: not vim_plugins_stat.stat.exists
+
+      # Caveat: Due to the nature of how Vim and its plugins are installed,
+      # YouCompleteMe won't be installed on the first run of the playbook...
+
+      - name: Check if YouCompleteMe is there
+        stat:
+          path: ~/.vim-plugins/plugins/YouCompleteMe/
+        register: YCM_stat
+
+      - name: Check if YouCompleteMe has been compiled
+        stat:
+          path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
+        register: YCM_compiled
 
       - name: Compile YouCompleteMe
-        command:
-          cmd: python3 install.py
-          chdir: ~/.vim-plugins/plugins/YouCompleteMe
+        block:
 
-      - name: Mark YCM as compiled
-        file:
-          path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
-          state: touch
+        - name: Compile YouCompleteMe
+          command:
+            cmd: python3 install.py
+            chdir: ~/.vim-plugins/plugins/YouCompleteMe
 
-      when: vim_plugins_stat.stat.exists and not YCM_compiled.stat.exists
+        - name: Mark YCM as compiled
+          file:
+            path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
+            state: touch
+
+        when: YCM_stat.stat.exists and not YCM_compiled.stat.exists
 
     # Install Homebrew packages and casks #
 
