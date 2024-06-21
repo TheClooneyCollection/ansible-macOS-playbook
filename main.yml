@@ -293,6 +293,11 @@
         # - moom
         # - lunar
 
+        # 3d modeling & printing
+
+        - autodesk-fusion
+        - bambu-studio
+
         # gaming
 
         - steam
