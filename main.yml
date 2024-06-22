@@ -209,7 +209,7 @@
           - git
           - gh # github
           - git-lfs
-          - ydiff # needed by git for diffing
+          - git-delta # diff for git and magit
 
           # editors support
 
