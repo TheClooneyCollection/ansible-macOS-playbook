@@ -391,7 +391,7 @@
         - ~/Source/Work
       tags: folder-structure
 
-    - name: Configure my dock
+    - name: Configure Dock & Mission Control
       tags: dock
       block:
 
@@ -433,14 +433,16 @@
             value: false
             state: present
           register: dock_no_suggestion_no_recents
+
+      - name: Don't rearrange my spaces please
         osx_defaults:
           domain: com.apple.dock
-          key: static-only
+          key: mru-spaces
           type: bool
-          value: true
+          value: false
           state: present
-        register: dock_only_running_apps
+        register: mission_control_no_auto_rearrange
 
       - name: Kill it! Kill it now! (Dock)
         command: killall Dock
-        when: dock_duck is changed or dock_no_bounce is changed or dock_only_running_apps is changed or dock_no_suggestion_no_recents is changed
+        when: dock_duck is changed or dock_no_bounce is changed or dock_only_running_apps is changed or dock_no_suggestion_no_recents is changed or mission_control_no_auto_rearrange is changed
