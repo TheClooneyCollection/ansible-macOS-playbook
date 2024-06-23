@@ -391,6 +391,54 @@
         - ~/Source/Work
       tags: folder-structure
 
+    - name: Configure Finder
+      tags: finder
+      block:
+
+      - name: Show path bar
+        osx_defaults:
+          domain: com.apple.finder
+          key: ShowPathbar
+          type: bool
+          value: true
+          state: present
+        register: finder_path_bar
+
+      - name: Show column view by default
+        osx_defaults:
+          domain: com.apple.finder
+          key: FXPreferredViewStyle
+          type: string
+          value: clmv
+          state: present
+        register: finder_column_view
+
+      - name: Keep folders on top
+        osx_defaults:
+          domain: com.apple.finder
+          key: _FXSortFoldersFirst
+          type: bool
+          value: true
+          state: present
+        register: finder_folders_on_top
+
+      - name: Search current folder by default
+        osx_defaults:
+          domain: com.apple.finder
+          key: FXDefaultSearchScope
+          type: string
+          value: SCcf
+          state: present
+        register: finder_search_current_folder
+
+      - name: Remove outdated (30 days) trash items
+        osx_defaults:
+          domain: com.apple.finder
+          key: FXRemoveOldTrashItems
+          type: bool
+          value: true
+          state: present
+        register: finder_trash_old_trash
     - name: Configure Dock & Mission Control
       tags: dock
       block:
