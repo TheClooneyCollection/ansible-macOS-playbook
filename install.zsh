@@ -2,14 +2,6 @@
 
 SYSTEM_PYTHON3="/usr/bin/python3"
 
-function clone_dotfiles_to_home {
-    cd ~
-    git init
-    git remote add origin https://github.com/TheClooneyCollection/dotfiles.git
-    git fetch origin
-    git switch main
-}
-
 function set_up_PATH_for_pip {
     # This sets up the PATH variable by evaluating something like:
     # `export PATH="$HOME/Library/Python/3.9/bin:/opt/homebrew/bin:$PATH"`
@@ -32,11 +24,9 @@ function install_dependencies {
 }
 
 function run_playbook {
-    cd ~/ansible-playbook
     ansible-playbook -K main.yml
 }
 
-clone_dotfiles_to_home
 set_up_PATH_for_pip
 upgrade_pip
 install_ansible
