@@ -439,9 +439,19 @@
           value: true
           state: present
         register: finder_trash_old_trash
+
     - name: Configure Dock & Mission Control
       tags: dock
       block:
+
+      - name: On your right
+        osx_defaults:
+          domain: com.apple.dock
+          key: orientation
+          type: string
+          value: right
+          state: present
+        register: dock_is_right
 
       - name: Duck!
         osx_defaults:
@@ -493,4 +503,4 @@
 
       - name: Kill it! Kill it now! (Dock)
         command: killall Dock
-        when: dock_duck is changed or dock_no_bounce is changed or dock_only_running_apps is changed or dock_no_suggestion_no_recents is changed or mission_control_no_auto_rearrange is changed
+        when: dock_is_right.changed or dock_duck.changed or dock_no_bounce.changed or dock_only_running_apps.changed or dock_no_suggestion_no_recents.changed or mission_control_no_auto_rearrange.changed
