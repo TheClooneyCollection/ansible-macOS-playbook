@@ -440,6 +440,31 @@
           state: present
         register: finder_trash_old_trash
 
+    - name: Configure Stage Manager
+      tags: stage-manager
+      block:
+
+      # Found a few settings here: https://forum.latenightsw.com/t/stage-manager-control-from-applescript/4303
+      # `GloballyEnabled`: Enabled or not
+      # `AppWindowGroupingBehavior`: Show windows from an application - All at once vs. One at a time
+      # `HideDesktop`: Show items in Stage Manager
+
+      - name: Enable Stage Manager
+        osx_defaults:
+          domain: com.apple.WindowManager
+          key: GloballyEnabled
+          type: bool
+          value: true
+          state: present
+
+      - name: Show desktop items in Stage Manager
+        osx_defaults:
+          domain: com.apple.WindowManager
+          key: HideDesktop
+          type: bool
+          value: false
+          state: present
+
     - name: Configure Dock & Mission Control
       tags: dock
       block:
