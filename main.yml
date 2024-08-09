@@ -302,7 +302,7 @@
           - loopback
 
           - vlc
-          # - elgato-stream-deck
+          - elgato-stream-deck
 
           # lightroom
 
