@@ -1,0 +1,19 @@
+---
+- name: Configure Stage Manager
+  tags: stage-manager
+  block:
+    - name: Enable Stage Manager
+      osx_defaults:
+        domain: com.apple.WindowManager
+        key: GloballyEnabled
+        type: bool
+        value: true
+        state: present
+
+    - name: Show desktop items in Stage Manager
+      osx_defaults:
+        domain: com.apple.WindowManager
+        key: HideDesktop
+        type: bool
+        value: false
+        state: present

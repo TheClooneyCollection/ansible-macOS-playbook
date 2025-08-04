@@ -1,0 +1,25 @@
+---
+- name: Set up SSH key pair
+  tags: ssh
+  when: generate_ssh
+  block:
+
+  - name: Check if SSH key pair exists
+    stat:
+      path: "{{ ssh_private_key_path }}"
+    register: ssh_private_key
+
+  - name: Set up SSH key pair
+    block:
+
+      - name: Get the passphrase for the SSH key pair
+        pause:
+          prompt: "Enter the passphrase"
+          echo: no
+        register: passphrase
+
+      - name: Generate the SSH key pair
+        command: "{{ ssh_keygen_command }}"
+
+    when: not ssh_private_key.stat.exists
+    no_log: true

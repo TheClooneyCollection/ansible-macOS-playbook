@@ -1,0 +1,24 @@
+---
+- name: Ensure Ansible is installed with Homebrew's pip
+  pip:
+    name: ansible
+  vars:
+    extra_path: "{{ brew_prefix.stdout }}/bin"
+  tags:
+    - ansible
+
+- name: Install poetry
+  homebrew:
+    name: poetry
+  become: true
+  become_user: "{{ homebrew_user }}"
+  tags:
+    - poetry
+
+- name: Set Up The Root Virtual Environment
+  command:
+    cmd: poetry install --no-root
+    chdir: ~/
+    creates: ~/poetry.lock
+  tags:
+    - poetry

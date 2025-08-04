@@ -1,0 +1,6 @@
+---
+- name: Configure fzf
+  command:
+    cmd: "{{ brew_prefix.stdout }}/opt/fzf/install"
+    creates: ~/.fzf.bash
+  tags: fzf

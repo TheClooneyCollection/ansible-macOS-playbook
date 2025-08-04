@@ -1,0 +1,3 @@
+---
+# Core Homebrew setup; no prior role dependencies
+dependencies: []

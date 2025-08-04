@@ -1,0 +1,63 @@
+---
+- name: Configure Dock & Mission Control
+  tags: dock
+  block:
+    - name: On your right
+      osx_defaults:
+        domain: com.apple.dock
+        key: orientation
+        type: string
+        value: right
+        state: present
+      register: dock_is_right
+
+    - name: Duck!
+      osx_defaults:
+        domain: com.apple.dock
+        key: autohide
+        type: bool
+        value: true
+        state: present
+      register: dock_duck
+
+    - name: Don't you dare to bounce (Dock icons, I am talking to you)
+      osx_defaults:
+        domain: com.apple.dock
+        key: no-bouncing
+        type: bool
+        value: true
+        state: present
+      register: dock_no_bounce
+
+    - name: Only show me running apps in the Dock
+      block:
+      - name: Only show me running apps in the Dock
+        osx_defaults:
+          domain: com.apple.dock
+          key: static-only
+          type: bool
+          value: true
+          state: present
+        register: dock_only_running_apps
+
+      - name: No suggested and recent apps in the Dock please
+        osx_defaults:
+          domain: com.apple.dock
+          key: show-recents
+          type: bool
+          value: false
+          state: present
+        register: dock_no_suggestion_no_recents
+
+    - name: Don't rearrange my spaces please
+      osx_defaults:
+        domain: com.apple.dock
+        key: mru-spaces
+        type: bool
+        value: false
+        state: present
+      register: mission_control_no_auto_rearrange
+
+    - name: Kill it! Kill it now! (Dock)
+      command: killall Dock
+      when: dock_is_right.changed or dock_duck.changed or dock_no_bounce.changed or dock_only_running_apps.changed or dock_no_suggestion_no_recents.changed or mission_control_no_auto_rearrange.changed

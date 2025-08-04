@@ -1,0 +1,21 @@
+---
+- name: Set up fishshell as the default shell
+  tags: fishshell
+  block:
+
+  - name: Get fishshell's path
+    command: which fish
+    register: fish
+    changed_when: false
+
+  - name: Ensure fishshell is included in /etc/shells
+    lineinfile:
+      path: /etc/shells
+      line: "{{ fish.stdout }}"
+    become: true
+
+  - name: Ensure current user's default shell is fish
+    user:
+      name: "{{ ansible_user_id }}"
+      shell: "{{ fish.stdout }}"
+    become: true

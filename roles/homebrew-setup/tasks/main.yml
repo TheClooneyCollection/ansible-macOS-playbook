@@ -1,0 +1,20 @@
+---
+- name: Set up Homebrew (and upgrade all packages)
+  include_role:
+    name: geerlingguy.mac.homebrew
+  vars:
+    # homebrew_upgrade_all_packages: false # override if desired
+    # homebrew_installed_packages:
+    # homebrew_uninstalled_packages:
+    # homebrew_cask_apps:
+    # homebrew_cask_uninstalled_apps:
+  tags:
+    - homebrew
+    - homebrew-setup
+
+- name: Get Homebrew's prefix
+  command: brew --prefix
+  register: brew_prefix
+  changed_when: false
+  tags:
+    - homebrew

@@ -1,0 +1,94 @@
+---
+- name: Install Homebrew CLI packages, languages, and casks
+  block:
+
+  - name: Install Homebrew packages
+    homebrew:
+      name: "{{ item }}"
+      state: present
+    become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+    become_user: "{{ homebrew_user }}"
+    loop:
+      # commandline utilities
+      - fish
+      - tree
+      - zoxide
+      - thefuck
+
+      # git ecosystem
+      - git
+      - gh
+      - git-lfs
+      - git-delta
+
+      # editors support
+      - fzf
+
+      - ripgrep
+      - ispell
+
+      # languages
+      - python
+      - ipython
+      - rbenv
+      - node
+      - yarn
+
+      # Swift tooling
+      - swiftgen
+      - swiftformat
+
+  - name: Check whether Xcode exists
+    command:
+      cmd: xcodebuild -version
+    ignore_errors: true
+    register: xcodebuild
+
+  - name: Install Homebrew packages requiring Xcode
+    homebrew:
+      name: "{{ item }}"
+      state: present
+    become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+    become_user: "{{ homebrew_user }}"
+    loop:
+      - swiftlint
+    when: xcodebuild is succeeded
+
+  - name: Install Homebrew Casks
+    homebrew_cask:
+      name: "{{ item }}"
+      state: present
+    become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+    become_user: "{{ homebrew_user }}"
+    loop:
+      # macOS must-haves
+      - 1password
+      - 1password-cli
+      - dropbox
+      - firefox
+      - sublime-text
+      - obsidian
+
+      # work / life?
+      - protonvpn
+      - parsec
+
+      # macOS quality of life improvements
+      - alfred
+      - caffeine
+      - istat-menus
+      - iterm2
+
+      # 3d modeling & printing
+      - autodesk-fusion
+      # - bambu-studio
+
+      # gaming
+      - steam
+
+      # streaming / recording
+      - obs
+      - loopback
+
+      - vlc
+      - elgato-stream-deck

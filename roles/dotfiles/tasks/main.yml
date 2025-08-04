@@ -1,0 +1,28 @@
+---
+- name: Set up my dotfile
+  tags: dotfiles
+  block:
+
+  - name: Clone the dotfile repo into the home directory `~`
+    shell:
+      cmd: |
+        cd ~
+        git init
+        git remote add origin https://github.com/TheClooneyCollection/dotfiles.git
+        git fetch origin
+        git switch -c main --track origin/main
+      creates: ~/.git
+    register: cloned_dotfile
+
+  # Using the `git` module will reset local branch to the main in remote
+  # which sometimes will drop local commits that haven't been pushed into remote yet...
+  # which is why we are just doing `git pull --rebase` here...
+  - name: Update the dotfile repo
+    command:
+      cmd: git pull --rebase
+      chdir: ~/ 
+    when: not cloned_dotfile.changed
+    register: updated_dotfile
+    changed_when: '"Already up to date" not in updated_dotfile.stdout'
+    # Note: `cloned_dotfile is skipped` does not work here.
+    # I assume that's because the `shell` module always runs.
