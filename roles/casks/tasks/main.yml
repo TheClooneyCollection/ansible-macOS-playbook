@@ -8,7 +8,7 @@
   loop:
     # macOS must-haves
     - 1password
-    - 1password-cli
+    # - 1password-cli
     - dropbox
     - firefox
     - sublime-text
@@ -21,8 +21,8 @@
     # - docker
     # - jq
 
-    - protonvpn
-    - parsec
+    # - protonvpn
+    # - parsec
 
     # macOS quality of life improvements
     - alfred
@@ -30,31 +30,22 @@
     - caffeine
     - istat-menus
     - iterm2
-    # - moom
+    - moom
     # - lunar
 
     # 3d modeling & printing
-    - autodesk-fusion
-    - bambu-studio
+    # - autodesk-fusion
+    # - bambu-studio
 
     # gaming
     - steam
 
     # streaming / recording
     - obs
-    # - audio-hijack
+    - audio-hijack
     - loopback
 
     - vlc
-    - elgato-stream-deck
-
-    # lightroom
-    # - adobe-creative-cloud
-
-    # MIA
-    # mas 'DaisyDisk', id: 411643860
-    # mas 'GIPHY CAPTURE', id: 668208984
-    # mas 'Disk Care', id: 913724705
+    # - elgato-stream-deck
   tags:
     - homebrew
-
