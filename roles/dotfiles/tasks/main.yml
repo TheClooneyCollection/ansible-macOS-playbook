@@ -1,0 +1,24 @@
+---
+- name: Set up my dotfile
+  tags: dotfiles
+  block:
+
+  - name: Clone the dotfile repo into the home directory `~`
+    shell:
+      cmd: |
+        cd ~
+        git init
+        git remote add origin https://github.com/TheClooneyCollection/dotfiles.git
+        git fetch origin
+        git switch -c main --track origin/main
+      creates: ~/.git
+    register: cloned_dotfile
+
+  - name: Update the dotfile repo
+    command:
+      cmd: git pull --rebase
+      chdir: ~/
+    when: not cloned_dotfile.changed
+    register: updated_dotfile
+    changed_when: '"Already up to date" not in updated_dotfile.stdout'
+

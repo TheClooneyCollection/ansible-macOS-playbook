@@ -1,0 +1,10 @@
+---
+- name: Let me check your password first
+  command: echo "Password test in progress..."
+  timeout: 1
+  become: true
+  changed_when: false
+
+- debug:
+    msg: Hello, World!
+

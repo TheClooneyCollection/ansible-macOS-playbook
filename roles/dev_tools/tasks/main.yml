@@ -1,0 +1,59 @@
+---
+- name: Install Homebrew packages
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    # commandline utilities
+    - fish
+    - tree
+    - zoxide
+    - thefuck
+
+    # git
+    - git
+    - gh
+    - git-lfs
+    - git-delta
+
+    # editors support
+    - fzf
+    - ripgrep
+    - ispell
+
+    # languages
+    - python
+    - ipython
+    - rbenv
+    - node
+    - yarn
+
+    # Swift
+    # - carthage
+    - swiftgen
+    - swiftformat
+  tags:
+    - homebrew
+
+- name: Check whether Xcode exists
+  command:
+    cmd: xcodebuild -version
+  ignore_errors: true
+  register: xcodebuild
+  tags:
+    - homebrew
+
+- name: Install Homebrew packages requiring Xcode
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - swiftlint
+  when: xcodebuild is succeeded
+  tags:
+    - homebrew
+

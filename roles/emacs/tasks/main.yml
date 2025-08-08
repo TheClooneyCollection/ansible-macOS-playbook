@@ -1,0 +1,39 @@
+---
+- name: Spacemacs Block
+  tags: spacemacs
+  block:
+  - name: Tap the Emacs Plus repository
+    homebrew_tap:
+      name: d12frosted/emacs-plus
+    become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+    become_user: "{{ homebrew_user }}"
+
+  - name: Install Emacs Plus
+    homebrew:
+      name: emacs-plus@30
+      install_options: with-elrumo2-icon
+    become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+    become_user: "{{ homebrew_user }}"
+
+  - name: Start Emacs Plus Service
+    command: brew services start d12frosted/emacs-plus/emacs-plus@30
+    register: start_emacs_service
+    changed_when: '"Successfully started" in start_emacs_service.stdout'
+
+  - name: Symlink the Emacs.app to /Applications
+    file:
+      src: "{{ brew_prefix.stdout }}/opt/emacs-plus@30/Emacs.app"
+      dest: /Applications/Emacs.app
+      state: link
+
+  - name: Check if Spacemacs has been initialized
+    stat:
+      path: ~/.emacs.d/
+    register: spacemacs_stat
+
+  - name: Keep Spacemacs up-to-date
+    git:
+      repo: https://github.com/syl20bnr/spacemacs.git
+      dest: ~/.emacs.d/
+      version: develop
+
