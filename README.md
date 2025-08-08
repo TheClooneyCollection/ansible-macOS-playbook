@@ -36,7 +36,7 @@ Roles in this repo:
 
 - `preflight`: quick sudo/password check and hello.
 - `dotfiles`: clone/update `TheClooneyCollection/dotfiles` into `~/`.
-- `ssh`: optionally generate SSH keypair (gated by `generate_ssh`).
+- `ssh`: generate SSH keypair automatically if one does not exist.
 - `homebrew_base`: installs/configures Homebrew via `geerlingguy.mac.homebrew` and registers `brew_prefix`.
 - `dev_tools`: command-line formulae (git, fzf, ripgrep, languages, swift tools, etc.).
 - `casks`: GUI apps and utilities.
@@ -51,7 +51,7 @@ Roles in this repo:
 - `macos_stage_manager`: Stage Manager defaults.
 - `macos_dock`: Dock & Mission Control defaults.
 
-Global variables remain defined at the play level in `main.yml` (e.g., `homebrew_user`, `homebrew_group`, `generate_ssh`, `ssh_*`).
+Global variables remain defined at the play level in `main.yml` (e.g., `homebrew_user`, `homebrew_group`, `ssh_*`).
 
 ## Tags and targeted runs
 
@@ -66,7 +66,7 @@ Examples:
 - Fonts only: `ansible-playbook -i inventory -K main.yml --tags homebrew` (ensures brew) then `--tags fonts` if you add a `fonts` tag to your run, or run entire play (this repo's fonts are invoked via role `shared_fonts`).
 - macOS UI defaults: `ansible-playbook -i inventory -K main.yml --tags finder,stage-manager,dock`
 - Editors: `ansible-playbook -i inventory -K main.yml --tags spacemacs,vim`
-- SSH generation: `ansible-playbook -i inventory -K main.yml --tags ssh -e generate_ssh=true`
+- SSH generation (automatic when missing): `ansible-playbook -i inventory -K main.yml --tags ssh`
 
 Notes on dependencies when targeting:
 

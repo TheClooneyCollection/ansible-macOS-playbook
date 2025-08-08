@@ -9,11 +9,9 @@
     homebrew_user: "{{ ansible_user_id }}"
     homebrew_group: admin
 
-    generate_ssh: false
     ssh_type: ed25519
     ssh_rounds: 256
     ssh_private_key_path: "~/.ssh/id_{{ ssh_type }}"
-    ssh_keygen_command: "ssh-keygen -o -t {{ ssh_type }} -a {{ ssh_rounds }} -N '{{ passphrase.user_input }}' -f {{ ssh_private_key_path }}"
 
   roles:
     - role: preflight
@@ -22,7 +20,6 @@
       tags: [dotfiles]
 
     - role: ssh
-      when: generate_ssh
       tags: [ssh]
 
     - role: homebrew_base
