@@ -13,14 +13,29 @@
     ssh_rounds: 256
     ssh_private_key_path: "~/.ssh/id_{{ ssh_type }}"
 
+  pre_tasks:
+    - name: Check 1Password in /Applications
+      stat:
+        path: /Applications/1Password.app
+      register: onepassword_app_sys
+      tags: [ssh]
+
+    - name: Check 1Password in ~/Applications
+      stat:
+        path: "{{ ansible_env.HOME }}/Applications/1Password.app"
+      register: onepassword_app_user
+      tags: [ssh]
+
+    - name: Set onepassword_installed fact
+      set_fact:
+        onepassword_installed: "{{ onepassword_app_sys.stat.exists or onepassword_app_user.stat.exists }}"
+      tags: [ssh]
+
   roles:
     - role: preflight
 
     - role: dotfiles
       tags: [dotfiles]
-
-    - role: ssh
-      tags: [ssh]
 
     - role: homebrew_base
       tags: [homebrew, homebrew-setup]
@@ -30,6 +45,10 @@
 
     - role: casks
       tags: [homebrew]
+
+    - role: ssh
+      when: onepassword_installed | default(false)
+      tags: [ssh]
 
     - role: shared_fonts
       vars:
