@@ -1,0 +1,11 @@
+---
+- name: Set up my folder structure
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - ~/Source/Projects
+    - ~/Source/Forks
+    - ~/Source/Work
+  tags: folder-structure
+

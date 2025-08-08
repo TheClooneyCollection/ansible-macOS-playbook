@@ -1,0 +1,49 @@
+---
+- name: Vim Block # Caveats: Vim's plugins aren't installed after this...
+  tags: vim
+  block:
+  - name: Install Vim
+    homebrew:
+      name: "{{ item }}"
+    loop:
+      - vim
+      - cmake
+    become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+    become_user: "{{ homebrew_user }}"
+
+  - name: Check if Vim plugins are installed
+    stat:
+      path: ~/.vim-plugins/
+    register: vim_plugins_stat
+
+  - name: Bootstrap Vim plugins if plugins are not installed yet
+    command: vim
+    async: 90
+    poll: 0
+    when: not vim_plugins_stat.stat.exists
+
+  - name: Check if YouCompleteMe is there
+    stat:
+      path: ~/.vim-plugins/plugins/YouCompleteMe/
+    register: YCM_stat
+
+  - name: Check if YouCompleteMe has been compiled
+    stat:
+      path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
+    register: YCM_compiled
+
+  - name: Compile YouCompleteMe
+    block:
+
+    - name: Compile YouCompleteMe
+      command:
+        cmd: python3 install.py
+        chdir: ~/.vim-plugins/plugins/YouCompleteMe
+
+    - name: Mark YCM as compiled
+      file:
+        path: ~/.vim-plugins/plugins/YouCompleteMe/.compiled
+        state: touch
+
+    when: YCM_stat.stat.exists and not YCM_compiled.stat.exists
+
