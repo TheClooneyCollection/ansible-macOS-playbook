@@ -12,24 +12,7 @@
     ssh_type: ed25519
     ssh_rounds: 256
     ssh_private_key_path: "~/.ssh/id_{{ ssh_type }}"
-
-  pre_tasks:
-    - name: Check 1Password in /Applications
-      stat:
-        path: /Applications/1Password.app
-      register: onepassword_app_sys
-      tags: [ssh]
-
-    - name: Check 1Password in ~/Applications
-      stat:
-        path: "{{ ansible_env.HOME }}/Applications/1Password.app"
-      register: onepassword_app_user
-      tags: [ssh]
-
-    - name: Set onepassword_installed fact
-      set_fact:
-        onepassword_installed: "{{ onepassword_app_sys.stat.exists or onepassword_app_user.stat.exists }}"
-      tags: [ssh]
+    ssh_keygen_command: "ssh-keygen -o -t {{ ssh_type }} -a {{ ssh_rounds }} -N '{{ passphrase.user_input }}' -f {{ ssh_private_key_path }}"
 
   roles:
     - role: preflight
@@ -37,17 +20,37 @@
     - role: dotfiles
       tags: [dotfiles]
 
+    - role: folders
+      tags: [folder-structure]
+
+    - role: macos_finder
+      tags: [finder]
+
+    - role: macos_stage_manager
+      tags: [stage-manager]
+
+    - role: macos_dock
+      tags: [dock]
+
     - role: homebrew_base
       tags: [homebrew, homebrew-setup]
 
     - role: dev_tools
       tags: [homebrew]
 
+    - role: shell_fish
+      tags: [fishshell]
+
+    - role: fzf
+      tags: [fzf]
+
+    - role: python_env
+      tags: [python]
+
     - role: casks
       tags: [homebrew]
 
     - role: ssh
-      when: onepassword_installed | default(false)
       tags: [ssh]
 
     - role: shared_fonts
@@ -62,24 +65,3 @@
 
     - role: vim
       tags: [vim]
-
-    - role: python_env
-      tags: [python]
-
-    - role: shell_fish
-      tags: [fishshell]
-
-    - role: fzf
-      tags: [fzf]
-
-    - role: folders
-      tags: [folder-structure]
-
-    - role: macos_finder
-      tags: [finder]
-
-    - role: macos_stage_manager
-      tags: [stage-manager]
-
-    - role: macos_dock
-      tags: [dock]
