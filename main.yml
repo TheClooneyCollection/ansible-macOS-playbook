@@ -38,6 +38,9 @@
     - role: dev_tools
       tags: [homebrew]
 
+    - role: openai_codex
+      tags: [npm, codex]
+
     - role: shell_fish
       tags: [fishshell]
 
