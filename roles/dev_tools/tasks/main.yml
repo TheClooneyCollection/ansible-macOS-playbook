@@ -23,6 +23,9 @@
     - ripgrep
     - ispell
 
+    # ai
+    codex
+
     # languages
     - python
     - ipython
