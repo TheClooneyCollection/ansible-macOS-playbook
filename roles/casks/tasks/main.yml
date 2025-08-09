@@ -15,14 +15,14 @@
     - obsidian
     # - little-snitch
 
-    # work / life?
+    # work
     # - zoom
     # - slack
     # - docker
     # - jq
 
-    # - protonvpn
-    # - parsec
+    # life
+    - whatsapp
 
     # macOS quality of life improvements
     - alfred
@@ -47,5 +47,10 @@
 
     - vlc
     # - elgato-stream-deck
+
+    # misc
+    # - protonvpn
+    # - parsec
+
   tags:
     - homebrew
