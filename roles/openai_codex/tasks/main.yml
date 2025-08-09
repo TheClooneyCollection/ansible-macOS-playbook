@@ -1,0 +1,12 @@
+---
+- name: Install openai/codex npm package
+  npm:
+    name: openai/codex
+    global: true
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  tags:
+    - npm
+    - codex
+
