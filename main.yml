@@ -14,6 +14,9 @@
     ssh_private_key_path: "~/.ssh/id_{{ ssh_type }}"
     ssh_keygen_command: "ssh-keygen -o -t {{ ssh_type }} -a {{ ssh_rounds }} -N '{{ passphrase.user_input }}' -f {{ ssh_private_key_path }}"
 
+    install_gaming_casks: true
+    install_streaming_casks: true
+
   roles:
     - role: preflight
 

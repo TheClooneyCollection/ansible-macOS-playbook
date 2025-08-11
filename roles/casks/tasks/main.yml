@@ -36,15 +36,6 @@
     # 3d modeling & printing
     # - autodesk-fusion
     # - bambu-studio
-
-    # gaming
-    - steam
-
-    # streaming / recording
-    - obs
-    - audio-hijack
-    - loopback
-
     - vlc
     # - elgato-stream-deck
 
@@ -52,5 +43,31 @@
     # - protonvpn
     # - parsec
 
+  tags:
+    - homebrew
+
+- name: Install gaming casks
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - steam
+  when: install_gaming_casks
+  tags:
+    - homebrew
+
+- name: Install streaming/recording casks
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - obs
+    - audio-hijack
+    - loopback
+  when: install_streaming_casks
   tags:
     - homebrew
