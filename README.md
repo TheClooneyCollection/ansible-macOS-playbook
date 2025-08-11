@@ -72,6 +72,20 @@ Notes on dependencies when targeting:
 
 - Some roles rely on `homebrew_base` to have run (because it registers `brew_prefix` and ensures Homebrew): `emacs`, `python_env`, and `fzf` in particular. When running these tags alone, include `homebrew` too, e.g.: `--tags homebrew,spacemacs` or `--tags homebrew,python`.
 - `casks` and `dev_tools` also assume Homebrew is installed; include `--tags homebrew` if you are targeting them on a fresh machine.
+ 
+## Optional cask groups
+
+The `casks` role installs a base set of applications. Gaming and streaming/recording tools are enabled by default.
+Skip them by setting the following variables to `false` when invoking the playbook:
+
+- `install_gaming_casks` installs `steam`
+- `install_streaming_casks` installs `obs`, `audio-hijack`, and `loopback`
+
+Example:
+
+```bash
+ansible-playbook -i inventory -K main.yml -e install_gaming_casks=false -e install_streaming_casks=false
+```
 
 ## Credits
 
