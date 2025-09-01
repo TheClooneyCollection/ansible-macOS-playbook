@@ -1,0 +1,14 @@
+---
+- name: Install Quest development tools (adb, gnirehtet)
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - android-platform-tools  # provides `adb`
+    - gnirehtet
+  tags:
+    - homebrew
+    - quest
+

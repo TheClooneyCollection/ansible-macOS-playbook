@@ -39,6 +39,7 @@ Roles in this repo:
 - `ssh`: generate SSH keypair automatically if one does not exist.
 - `homebrew_base`: installs/configures Homebrew via `geerlingguy.mac.homebrew` and registers `brew_prefix`.
 - `dev_tools`: command-line formulae (git, fzf, ripgrep, languages, swift tools, etc.).
+- `quest`: Quest dev tools via Homebrew (`adb` via `android-platform-tools`, `gnirehtet`).
 - `casks`: GUI apps and utilities.
 - `shared_fonts`: shared font installation helper (kept as-is, separate role in `roles/shared_fonts`).
 - `emacs`: Emacs Plus + Spacemacs setup.
@@ -55,14 +56,15 @@ Global variables remain defined at the play level in `main.yml` (e.g., `homebrew
 
 ## Tags and targeted runs
 
-Common tags: `homebrew`, `homebrew-setup`, `dotfiles`, `ssh`, `spacemacs`, `vim`, `python`, `poetry`, `fishshell`, `fzf`, `folder-structure`, `finder`, `stage-manager`, `dock`.
+Common tags: `homebrew`, `homebrew-setup`, `dotfiles`, `ssh`, `spacemacs`, `vim`, `python`, `poetry`, `fishshell`, `fzf`, `folder-structure`, `finder`, `stage-manager`, `dock`, `quest`.
 
 Examples:
 
 - List tags: `ansible-playbook -i inventory --list-tags main.yml`
 - Syntax check: `ansible-playbook -i inventory --syntax-check main.yml`
 - Dry run: `ansible-playbook -i inventory -K --check --diff main.yml`
-- Homebrew base + dev tools + casks: `ansible-playbook -i inventory -K main.yml --tags homebrew`
+- Homebrew base + dev tools + casks (+ quest tools): `ansible-playbook -i inventory -K main.yml --tags homebrew`
+- Quest tools only: `ansible-playbook -i inventory -K main.yml --tags quest`
 - Fonts only: `ansible-playbook -i inventory -K main.yml --tags homebrew` (ensures brew) then `--tags fonts` if you add a `fonts` tag to your run, or run entire play (this repo's fonts are invoked via role `shared_fonts`).
 - macOS UI defaults: `ansible-playbook -i inventory -K main.yml --tags finder,stage-manager,dock`
 - Editors: `ansible-playbook -i inventory -K main.yml --tags spacemacs,vim`
