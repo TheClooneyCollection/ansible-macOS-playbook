@@ -24,7 +24,7 @@
     - ispell
 
     # ai
-    codex
+    - codex
 
     # languages
     - python
