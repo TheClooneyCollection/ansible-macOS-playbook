@@ -23,3 +23,14 @@
   tags:
     - homebrew
     - ai-assistance
+
+- name: Install LiteLLM Proxy via pip
+  pip:
+    name: "litellm[proxy]"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  tags:
+    - homebrew
+    - ai-assistance
+    - python
