@@ -1,0 +1,25 @@
+---
+- name: Install AI CLI tools
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - codex
+  tags:
+    - homebrew
+    - ai-assistance
+
+- name: Install AI apps (casks)
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - lm-studio
+    - ollama-app
+  tags:
+    - homebrew
+    - ai-assistance

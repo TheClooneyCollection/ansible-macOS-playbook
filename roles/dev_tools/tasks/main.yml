@@ -23,9 +23,6 @@
     - ripgrep
     - ispell
 
-    # ai
-    - codex
-
     # languages
     - python
     - ipython
@@ -59,4 +56,3 @@
   when: xcodebuild is succeeded
   tags:
     - homebrew
-

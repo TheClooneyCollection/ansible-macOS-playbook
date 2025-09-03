@@ -41,6 +41,9 @@
     - role: dev_tools
       tags: [homebrew]
 
+    - role: ai-assitance
+      tags: [homebrew, ai-assistance]
+
     - role: quest
       tags: [quest]
 
