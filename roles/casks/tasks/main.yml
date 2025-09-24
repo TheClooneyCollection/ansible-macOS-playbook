@@ -26,18 +26,17 @@
 
     # macOS quality of life improvements
     - alfred
-    # - bartender
+    - jordanbaird-ice # open source menu bar management
     - caffeine
     - istat-menus
     - iterm2
     - moom
-    # - lunar
 
     # 3d modeling & printing
     # - autodesk-fusion
     # - bambu-studio
+
     - vlc
-    # - elgato-stream-deck
 
     # misc
     # - protonvpn
@@ -45,6 +44,7 @@
 
   tags:
     - homebrew
+    - casks
 
 - name: Install gaming casks
   homebrew_cask:
@@ -53,10 +53,13 @@
   become: "{{ (homebrew_user != ansible_user_id) | bool }}"
   become_user: "{{ homebrew_user }}"
   loop:
+    - discord
     - steam
   when: install_gaming_casks
   tags:
     - homebrew
+    - casks
+    - gaming
 
 - name: Install streaming/recording casks
   homebrew_cask:
@@ -68,6 +71,9 @@
     - obs
     - audio-hijack
     - loopback
+    # - elgato-stream-deck
   when: install_streaming_casks
   tags:
     - homebrew
+    - casks
+    - streaming
