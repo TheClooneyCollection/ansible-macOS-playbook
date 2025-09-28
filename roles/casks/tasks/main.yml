@@ -29,8 +29,12 @@
     - jordanbaird-ice # open source menu bar management
     - caffeine
     - istat-menus
-    - iterm2
     - moom
+
+    # dev
+    - iterm2
+    - wave
+
 
     # 3d modeling & printing
     # - autodesk-fusion

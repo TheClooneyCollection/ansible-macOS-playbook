@@ -30,12 +30,16 @@
     - node
     - yarn
 
+    # networking
+    - cloudflared
+
     # Swift
     # - carthage
     - swiftgen
     - swiftformat
   tags:
     - homebrew
+    - dev_tools
 
 - name: Check whether Xcode exists
   command:
