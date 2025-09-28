@@ -30,8 +30,8 @@
     - node
     - yarn
 
-    # networking
-    - cloudflared
+    # private networking
+    - tailscale
 
     # Swift
     # - carthage
