@@ -32,6 +32,8 @@
 
     # private networking
     - tailscale
+    - mosh
+    - tmux
 
     # Swift
     # - carthage
