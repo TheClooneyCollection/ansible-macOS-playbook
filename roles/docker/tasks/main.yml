@@ -1,0 +1,41 @@
+---
+- name: Install Docker packages
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - docker-credential-helper
+    - docker
+    - colima
+    - docker-compose
+  tags:
+    - homebrew
+    - docker
+
+- name: Ensure Docker CLI plugins directory exists
+  file:
+    path: "{{ ansible_user_dir }}/.docker/cli-plugins"
+    state: directory
+    mode: "0755"
+  tags:
+    - docker
+
+- name: Symlink docker-compose CLI plugin
+  file:
+    src: /opt/homebrew/opt/docker-compose/bin/docker-compose
+    dest: "{{ ansible_user_dir }}/.docker/cli-plugins/docker-compose"
+    state: link
+    force: true
+  tags:
+    - docker
+
+- name: Start Colima service
+  command: brew services start colima
+  register: colima_service
+  changed_when: '"Successfully started" in colima_service.stdout or "Successfully started" in colima_service.stderr'
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  tags:
+    - docker

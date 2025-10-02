@@ -41,6 +41,9 @@
     - role: dev_tools
       tags: [homebrew]
 
+    - role: docker
+      tags: [homebrew, docker]
+
     - role: ai-assitance
       tags: [homebrew, ai-assistance]
 
