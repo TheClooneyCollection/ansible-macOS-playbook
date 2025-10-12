@@ -41,6 +41,9 @@
     - role: dev_tools
       tags: [homebrew]
 
+    - role: rust
+      tags: [rust]
+
     - role: docker
       tags: [homebrew, docker]
 
