@@ -17,8 +17,7 @@
 
     # work
     # - zoom
-    # - slack
-    # - docker
+    - slack
     # - jq
 
     # life
@@ -33,6 +32,8 @@
 
     # dev
     - iterm2
+    - itermai
+    - itermbrowserplugin
     - wave
 
 
