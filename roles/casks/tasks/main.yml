@@ -16,7 +16,7 @@
     # - little-snitch
 
     # work
-    # - zoom
+    - zoom
     - slack
     # - jq
 
