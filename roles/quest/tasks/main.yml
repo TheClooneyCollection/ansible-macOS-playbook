@@ -8,7 +8,9 @@
   loop:
     - android-platform-tools  # provides `adb`
     - gnirehtet
+    - bluestacks
   tags:
     - homebrew
     - quest
+
 
