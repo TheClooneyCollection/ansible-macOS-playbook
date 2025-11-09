@@ -7,7 +7,6 @@
   become_user: "{{ homebrew_user }}"
   loop:
     - codex
-    - gemini-cli
   tags:
     - homebrew
     - ai-assistance
