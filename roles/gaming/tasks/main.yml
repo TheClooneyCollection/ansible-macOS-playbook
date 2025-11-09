@@ -1,0 +1,15 @@
+---
+- name: Install gaming casks
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - discord
+    - steam
+  when: install_gaming_casks
+  tags:
+    - homebrew
+    - casks
+    - gaming

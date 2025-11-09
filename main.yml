@@ -65,6 +65,12 @@
     - role: casks
       tags: [homebrew]
 
+    - role: gaming
+      tags: [homebrew, gaming]
+
+    - role: streaming
+      tags: [homebrew, streaming]
+
     - role: ssh
       tags: [ssh]
 

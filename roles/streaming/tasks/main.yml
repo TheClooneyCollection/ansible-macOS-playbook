@@ -1,0 +1,17 @@
+---
+- name: Install streaming/recording casks
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
+  loop:
+    - obs
+    - audio-hijack
+    - loopback
+    # - elgato-stream-deck
+  when: install_streaming_casks
+  tags:
+    - homebrew
+    - casks
+    - streaming
