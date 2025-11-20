@@ -33,9 +33,6 @@
     - role: dev_tools
       tags: [homebrew]
 
-    - role: quest
-      tags: [quest]
-
     - role: shell_fish
       tags: [fishshell]
 
