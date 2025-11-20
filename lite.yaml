@@ -1,0 +1,68 @@
+---
+- hosts: all
+
+  vars:
+    # For all homebrew related tasks,
+    # remember to add the `become` and `become_user` properties.
+    # So that this playbook can be used on a multiple users system.
+
+    homebrew_user: "{{ ansible_user_id }}"
+    homebrew_group: admin
+
+  roles:
+    - role: preflight
+
+    - role: dotfiles
+      tags: [dotfiles]
+
+    - role: folders
+      tags: [folder-structure]
+
+    - role: macos_finder
+      tags: [finder]
+
+    - role: macos_stage_manager
+      tags: [stage-manager]
+
+    - role: macos_dock
+      tags: [dock]
+
+    - role: homebrew_base
+      tags: [homebrew, homebrew-setup]
+
+    - role: dev_tools
+      tags: [homebrew]
+
+    - role: quest
+      tags: [quest]
+
+    - role: shell_fish
+      tags: [fishshell]
+
+    - role: fzf
+      tags: [fzf]
+
+    - role: python_env
+      tags: [python]
+
+    - role: shared_fonts
+      vars:
+        fonts:
+          - font-inconsolata-g-for-powerline
+          - font-source-code-pro
+          - font-source-code-pro-for-powerline
+
+    - role: vim
+      tags: [vim]
+
+  tasks:
+    - name: Install essential Homebrew casks
+      homebrew_cask:
+        name: "{{ item }}"
+        state: present
+      become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+      become_user: "{{ homebrew_user }}"
+      loop:
+        - 1password
+        - firefox
+        - iterm2
