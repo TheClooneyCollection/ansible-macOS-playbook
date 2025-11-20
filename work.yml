@@ -1,0 +1,7 @@
+---
+- import_playbook: main.yml
+  tags:
+    - always
+    - "!quest"
+    - "!gaming"
+    - "!streaming"
