@@ -23,8 +23,28 @@ function install_dependencies {
     ansible-galaxy install -r requirements.yml
 }
 
+PLAYBOOK_FILE="main.yml"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --lite)
+            PLAYBOOK_FILE="lite.yaml"
+            shift
+            ;;
+        --work)
+            PLAYBOOK_FILE="work.yml"
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Usage: $0 [--lite|--work]"
+            exit 1
+            ;;
+    esac
+done
+
 function run_playbook {
-    ansible-playbook -K main.yml
+    ansible-playbook -K "$PLAYBOOK_FILE"
 }
 
 set_up_PATH_for_pip
