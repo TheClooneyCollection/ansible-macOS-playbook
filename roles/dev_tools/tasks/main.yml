@@ -18,7 +18,10 @@
     - git-lfs
     - git-delta
 
-    # editors support
+    # editors & their support
+    - neovim
+    # - vim # has its own role
+    # - emacs # has its own role
     - fzf
     - ripgrep
     - ispell
