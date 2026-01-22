@@ -8,7 +8,7 @@
   loop:
     # macOS must-haves
     - 1password
-    # - 1password-cli
+    - 1password-cli
     - dropbox
     - firefox
     - sublime-text
@@ -29,12 +29,12 @@
     - caffeine
     - istat-menus
     - moom
+    - karabiner-elements
 
     # dev
     - iterm2
     - itermai
     - itermbrowserplugin
-    - wave
 
 
     # 3d modeling & printing
