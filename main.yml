@@ -20,6 +20,9 @@
   roles:
     - role: preflight
 
+    - role: sudo_by_touchid
+      tags: [touchid]
+
     - role: dotfiles
       tags: [dotfiles]
 
