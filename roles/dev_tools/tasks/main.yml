@@ -12,6 +12,9 @@
     - zoxide
     - thefuck
 
+    # package manager
+    - mise
+
     # git
     - git
     - gh
