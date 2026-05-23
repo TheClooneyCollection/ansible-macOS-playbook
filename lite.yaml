@@ -62,5 +62,6 @@
       loop:
         - 1password
         - firefox
+        - ghostty
         - iterm2
         - sublime-text

@@ -33,6 +33,7 @@
     - karabiner-elements
 
     # dev
+    - ghostty
     - iterm2
     - itermai
     - itermbrowserplugin
