@@ -44,7 +44,7 @@ Roles in this repo:
 - `shared_fonts`: shared font installation helper (kept as-is, separate role in `roles/shared_fonts`).
 - `emacs`: Emacs Plus + Spacemacs setup.
 - `vim`: Vim + YouCompleteMe bootstrap/compile.
-- `python_env`: pip `ansible`, install `poetry`, run `poetry install`.
+- `python_env`: install `ansible` with Homebrew's pip.
 - `shell_fish`: default shell to fish.
 - `fzf`: run fzf installer.
 - `folders`: create `~/Source/{Projects,Forks,Work}`.
@@ -56,7 +56,7 @@ Global variables remain defined at the play level in `main.yml` (e.g., `homebrew
 
 ## Tags and targeted runs
 
-Common tags: `homebrew`, `homebrew-setup`, `dotfiles`, `ssh`, `spacemacs`, `vim`, `python`, `poetry`, `fishshell`, `fzf`, `folder-structure`, `finder`, `stage-manager`, `dock`, `quest`.
+Common tags: `homebrew`, `homebrew-setup`, `dotfiles`, `ssh`, `spacemacs`, `vim`, `python`, `fishshell`, `fzf`, `folder-structure`, `finder`, `stage-manager`, `dock`, `quest`.
 
 Examples:
 
