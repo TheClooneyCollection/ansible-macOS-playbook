@@ -26,7 +26,7 @@
 - No formal unit tests; keep tasks idempotent and reversible.
 
 ## Commit & Pull Request Guidelines
-- Commits: short, imperative subject lines (e.g., "Add Stage Manager config", "Use git-delta for diffs").
+- Commits: follow the repo's current subject style when possible. Prefer scoped conventional subjects for feature work (e.g., `feat(devtools): add bat`, `feat(casks): add Ghostty to Homebrew casks`) and keep legacy unscoped subjects only when matching existing areas that still use them.
 - PRs must include: purpose/summary, scope (files/roles/tags touched), example command used to verify (e.g., the exact `ansible-playbook` line), and notes on idempotence.
 - Link related issues; include `--check`/`--diff` output snippets when behavior changes.
 

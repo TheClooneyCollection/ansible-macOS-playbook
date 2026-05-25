@@ -8,6 +8,7 @@
   loop:
     # commandline utilities
     - fish
+    - bat
     - tree
     - zoxide
     - thefuck
