@@ -11,6 +11,7 @@
     - bat
     - tree
     - zoxide
+    - yazi
     - thefuck
 
     # package manager
